@@ -1,0 +1,16 @@
+[
+{
+  "modid": "DCsFluidity",
+  "name": "FluidityFoodstuffsForAMT",
+  "description": "Handling of fluidity foodstuffs, and ore dictionary integration.",
+  "version": "1.7.10_1.0a",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["defeatedcrow"],
+  "credits": "defeatedcrow",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["MinecraftForge1.7.10 10.13.0.1230+"]
+}
+]

@@ -1,0 +1,30 @@
+item.fluiditydc.sack_flour.name=Flour Sack
+item.fluiditydc.sack_salt.name=Salt Sack
+item.fluiditydc.sack_sugar.name=Sugar Sack
+item.fluiditydc.sack_milk.name=Milk Pack
+item.fluiditydc.sack_wheat.name=Wheat Sack
+item.fluiditydc.sack_rice.name=Rice Sack
+item.fluiditydc.sack_seed.name=Seed Sack
+
+item.fluiditydc.bucket_flour.name=Flour Bucket
+item.fluiditydc.bucket_salt.name=Salt Bucket
+item.fluiditydc.bucket_sugar.name=Sugar Bucket
+item.fluiditydc.bucket_wheat.name=Wheat Bucket
+item.fluiditydc.bucket_rice.name=Rice Bucket
+item.fluiditydc.bucket_seed.name=Seed Bucket
+
+tile.fluiditydc.block_flour.name=Fluidity Flour
+tile.fluiditydc.block_salt.name=Fluidity Salt
+tile.fluiditydc.block_sugar.name=Fluidity Sugar
+tile.fluiditydc.block_wheat.name=Fluidity Wheat
+tile.fluiditydc.block_rice.name=Fluidity Rice
+tile.fluiditydc.block_seed.name=Fluidity Seed
+tile.fluiditydc.block_milk.name=Fluidity Milk
+
+fluid.fluid_flour=Flour
+fluid.fluid_salt=Salt
+fluid.fluid_sugar=Sugar
+fluid.fluid_wheat=Wheat
+fluid.fluid_rice=Rice
+fluid.fluid_seed=Seed
+fluid.fluid_milk=Milk
