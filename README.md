@@ -1,4 +1,4 @@
-# FluidityFoodstaffs 1.7.10_1.0b
+# FluidityFoodstuffs 1.7.10_1.0b
 
 ##概要
 ・このMODは単体でも導入できますが、主にAppleMilkTea ver2のレシピ拡張アドオンの前提MODとして作成されたMODです。
