@@ -8,6 +8,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import defeatedcrow.addonforamt.fluidity.block.BlockFluidHopper;
+import defeatedcrow.addonforamt.fluidity.block.BlockFluidIBC;
+import defeatedcrow.addonforamt.fluidity.block.ItemBlockFluidContainer;
 import defeatedcrow.addonforamt.fluidity.fluid.fluid.FluidFlourBase;
 import defeatedcrow.addonforamt.fluidity.fluid.fluid.FluidMilkBase;
 import defeatedcrow.addonforamt.fluidity.fluid.item.*;
@@ -31,6 +34,20 @@ public class MaterialRegister {
 		.setCreativeTab(FluidityCore.fluidity);
 		
 		GameRegistry.registerItem(FluidityCore.flourCont, "fluiditydc.sack");
+	}
+	
+	public static void addBlock()
+	{
+		FluidityCore.fluidIBC = new BlockFluidIBC()
+		.setBlockName("fluiditydc.IBC")
+		.setCreativeTab(FluidityCore.fluidity);
+		
+		FluidityCore.fluidHopper = new BlockFluidHopper()
+		.setBlockName("fluiditydc.fluid_hopper")
+		.setCreativeTab(FluidityCore.fluidity);
+		
+		GameRegistry.registerBlock(FluidityCore.fluidIBC, ItemBlockFluidContainer.class, "fluiditydc.IBC");
+		GameRegistry.registerBlock(FluidityCore.fluidHopper, "fluiditydc.fluidHopper");
 	}
 	
 	public static void addFluid()
@@ -69,7 +86,7 @@ public class MaterialRegister {
 					new ItemStack(FluidityCore.flourCont), new ItemStack(Items.paper));
 			
 			FluidityCore.flourBlock = new FluidFlourBase(FluidityCore.flourFluid, Material.sand, "flour" + "_still")
-			.setBlockName("fluiditydc.block_" + "flour").setCreativeTab(FluidityCore.fluidity);
+			.setBlockName("fluiditydc.block_" + "flour");
 			GameRegistry.registerBlock(FluidityCore.flourBlock, "block_" + "flour");
 			FluidityCore.flourFluid.setBlock(FluidityCore.flourBlock);
 			
@@ -91,7 +108,7 @@ public class MaterialRegister {
 					new ItemStack(FluidityCore.flourCont, 1, 1), new ItemStack(Items.paper));
 			
 			FluidityCore.saltBlock = new FluidFlourBase(FluidityCore.saltFluid, Material.sand, "salt" + "_still")
-			.setBlockName("fluiditydc.block_" + "salt").setCreativeTab(FluidityCore.fluidity);
+			.setBlockName("fluiditydc.block_" + "salt");
 			GameRegistry.registerBlock(FluidityCore.saltBlock, "block_" + "salt");
 			FluidityCore.saltFluid.setBlock(FluidityCore.saltBlock);
 			
@@ -113,7 +130,7 @@ public class MaterialRegister {
 					new ItemStack(FluidityCore.flourCont, 1, 2), new ItemStack(Items.paper));
 			
 			FluidityCore.sugarBlock = new FluidFlourBase(FluidityCore.sugarFluid, Material.sand, "sugar" + "_still")
-			.setBlockName("fluiditydc.block_" + "sugar").setCreativeTab(FluidityCore.fluidity);
+			.setBlockName("fluiditydc.block_" + "sugar");
 			GameRegistry.registerBlock(FluidityCore.sugarBlock, "block_" + "sugar");
 			FluidityCore.sugarFluid.setBlock(FluidityCore.sugarBlock);
 			
@@ -135,7 +152,7 @@ public class MaterialRegister {
 					new ItemStack(FluidityCore.flourCont, 1, 4), new ItemStack(Items.paper));
 			
 			FluidityCore.wheatBlock = new FluidFlourBase(FluidityCore.wheatFluid, Material.sand, "wheat" + "_still")
-			.setBlockName("fluiditydc.block_" + "wheat").setCreativeTab(FluidityCore.fluidity);
+			.setBlockName("fluiditydc.block_" + "wheat");
 			GameRegistry.registerBlock(FluidityCore.wheatBlock, "block_" + "wheat");
 			FluidityCore.wheatFluid.setBlock(FluidityCore.wheatBlock);
 			
@@ -157,7 +174,7 @@ public class MaterialRegister {
 					new ItemStack(FluidityCore.flourCont, 1, 5), new ItemStack(Items.paper));
 			
 			FluidityCore.riceBlock = new FluidFlourBase(FluidityCore.riceFluid, Material.sand, "rice" + "_still")
-			.setBlockName("fluiditydc.block_" + "rice").setCreativeTab(FluidityCore.fluidity);
+			.setBlockName("fluiditydc.block_" + "rice");
 			GameRegistry.registerBlock(FluidityCore.riceBlock, "block_" + "rice");
 			FluidityCore.riceFluid.setBlock(FluidityCore.riceBlock);
 			
@@ -179,7 +196,7 @@ public class MaterialRegister {
 					new ItemStack(FluidityCore.flourCont, 1, 6), new ItemStack(Items.paper));
 			
 			FluidityCore.seedBlock = new FluidFlourBase(FluidityCore.seedFluid, Material.sand, "seed" + "_still")
-			.setBlockName("fluiditydc.block_" + "seed").setCreativeTab(FluidityCore.fluidity);
+			.setBlockName("fluiditydc.block_" + "seed");
 			GameRegistry.registerBlock(FluidityCore.seedBlock, "block_" + "seed");
 			FluidityCore.seedFluid.setBlock(FluidityCore.seedBlock);
 			
@@ -201,7 +218,7 @@ public class MaterialRegister {
 					new ItemStack(FluidityCore.flourCont, 1, 3), new ItemStack(Items.paper));
 			
 			FluidityCore.milkBlock = new FluidMilkBase(FluidityCore.milkFluid, Material.water, "milk" + "_still")
-			.setBlockName("fluiditydc.block_" + "milk").setCreativeTab(FluidityCore.fluidity);
+			.setBlockName("fluiditydc.block_" + "milk");
 			GameRegistry.registerBlock(FluidityCore.milkBlock, "block_" + "milk");
 			FluidityCore.milkFluid.setBlock(FluidityCore.milkBlock);
 			
@@ -211,6 +228,9 @@ public class MaterialRegister {
 						new ItemStack(Items.milk_bucket, 1, 0), new ItemStack(Items.bucket));
 			}
 		}
+		
+		FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(FluidRegistry.WATER.getName(), 100),
+				new ItemStack(FluidityCore.flourCont, 1, 7), new ItemStack(Items.paper));
 	}
 
 }

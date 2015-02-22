@@ -22,7 +22,7 @@ import defeatedcrow.addonforamt.fluidity.api.event.*;
 
 public class ItemFlourContainer extends Item{
 	
-	private static String[] sackName = new String[] {"flour", "salt", "sugar", "milk", "wheat", "rice", "seed"};
+	private static String[] sackName = new String[] {"flour", "salt", "sugar", "milk", "wheat", "rice", "seed", "water"};
 	
 	@SideOnly(Side.CLIENT)
     private IIcon iconItemType[];
@@ -80,7 +80,7 @@ public class ItemFlourContainer extends Item{
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int par1)
     {
-        int j = MathHelper.clamp_int(par1, 0, 6);
+        int j = MathHelper.clamp_int(par1, 0, 7);
         return this.iconItemType[j];
     }
 
@@ -91,7 +91,7 @@ public class ItemFlourContainer extends Item{
 	
 	@Override
 	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 6);
+		int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 7);
 		return super.getUnlocalizedName() + "_" + sackName[i];
 	}
 	
@@ -105,15 +105,16 @@ public class ItemFlourContainer extends Item{
 		par3List.add(new ItemStack(this, 1, 4));
 		par3List.add(new ItemStack(this, 1, 5));
 		par3List.add(new ItemStack(this, 1, 6));
+		par3List.add(new ItemStack(this, 1, 7));
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister)
 	{
-		this.iconItemType = new IIcon[7];
+		this.iconItemType = new IIcon[8];
 
-        for (int i = 0; i < 7; ++i)
+        for (int i = 0; i < 8; ++i)
         {
         	this.iconItemType[i] = par1IconRegister.registerIcon("fluiditydc:sack_" + sackName[i]);
         }

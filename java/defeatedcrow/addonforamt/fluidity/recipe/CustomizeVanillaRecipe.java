@@ -34,12 +34,17 @@ public class CustomizeVanillaRecipe {
 	
 	private static ArrayList<ItemStack> exclusions = new ArrayList<ItemStack>();
 	
+	private static ItemStack[] shapelessOnly = new ItemStack[] {new ItemStack(Items.wheat)};
+	
 	static void initializeMap()
 	{
 		exclusions.add(new ItemStack(Blocks.hay_block));
 		exclusions.add(new ItemStack(FluidityCore.flourCont, 8, 3));
+		exclusions.add(new ItemStack(FluidityCore.flourCont, 8, 0));
+		exclusions.add(new ItemStack(FluidityCore.flourCont, 8, 7));
 		
 		replaceTable.put(new ItemStack(Items.milk_bucket), "foodMilk");
+		replaceTable.put(new ItemStack(Items.water_bucket), "foodWater");
 		replaceTable.put(new ItemStack(Items.sugar), "foodSugar");
 		replaceTable.put(new ItemStack(Items.wheat), "foodFlour");
 		replaceTable.put(new ItemStack(Items.wheat_seeds), "foodSeed");
@@ -67,6 +72,7 @@ public class CustomizeVanillaRecipe {
 		
 		ItemStack[] replaces = replaceTable.keySet().toArray(new ItemStack[replaceTable.keySet().size()]);
 		
+		
 		int count = 0;
 		
 		/*
@@ -84,7 +90,8 @@ public class CustomizeVanillaRecipe {
                     continue;
                 }
 
-                if(containsMatch(true, recipe.recipeItems, replaces))
+                if( !containsMatch(true, recipe.recipeItems, shapelessOnly)
+                		&& containsMatch(true, recipe.recipeItems, replaces))
                 {
                 	addRecipes.add(recipe);
                 }
@@ -136,7 +143,8 @@ public class CustomizeVanillaRecipe {
         			}
                 }
 
-                if(!check.isEmpty() && containsMatch(true, check.toArray((new ItemStack[check.size()])), replaces))
+                if(!check.isEmpty() && !containsMatch(true, check.toArray((new ItemStack[check.size()])), shapelessOnly)
+                		&& containsMatch(true, check.toArray((new ItemStack[check.size()])), replaces))
                 {
                 	addOreRecipes.add(recipe);
                 }
@@ -375,8 +383,6 @@ public class CustomizeVanillaRecipe {
 		}
 		
 		//item
-		
-		
 		for (int i = 0 ; i < x * y ; i++)
 		{
 			boolean b = false;
@@ -395,6 +401,23 @@ public class CustomizeVanillaRecipe {
 			else if (obj instanceof Block)
 			{
 				item = new ItemStack((Block)obj, 1, OreDictionary.WILDCARD_VALUE);
+			}
+			else if (obj instanceof ArrayList)
+			{
+				if ((ArrayList<ItemStack>)obj != null && !((ArrayList<ItemStack>)obj).isEmpty())
+				{
+					ItemStack item2 = ((ArrayList<ItemStack>)obj).get(0);
+					String str = OreDictionary.getOreName(OreDictionary.getOreIDs(item2)[0]);
+					inputs.add(c[i]);
+					inputs.add(str);
+					b = true;
+				}
+				else
+				{
+					inputs.add(c[i]);
+					inputs.add("Unknown");
+					b = true;
+				}
 			}
 			
 			if (item != null)
@@ -450,10 +473,18 @@ public class CustomizeVanillaRecipe {
 			}
 			else if (obj instanceof ArrayList)
 			{
-				ItemStack i = ((ArrayList<ItemStack>)obj).get(0);
-				String s = OreDictionary.getOreName(OreDictionary.getOreIDs(i)[0]);
-				inputs.add(s);
-				b = true;
+				if ((ArrayList<ItemStack>)obj != null && !((ArrayList<ItemStack>)obj).isEmpty())
+				{
+					ItemStack i = ((ArrayList<ItemStack>)obj).get(0);
+					String s = OreDictionary.getOreName(OreDictionary.getOreIDs(i)[0]);
+					inputs.add(s);
+					b = true;
+				}
+				else
+				{
+					inputs.add("Unknown");
+					b = true;
+				}
 			}
 			
 			if (item != null)

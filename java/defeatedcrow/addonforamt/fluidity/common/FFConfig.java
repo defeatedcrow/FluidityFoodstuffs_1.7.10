@@ -16,6 +16,7 @@ public class FFConfig {
 	public static String[] wheatList = {"wheat", "Wheat", "cropWheat", "foodWheat"};
 	public static String[] riceList = {"rice", "Rice", "cropRice", "foodRice"};
 	public static String[] seedList = {"seed", "Seed", "cropSeed", "foodSeed"};
+	public static String[] waterList = {"water", "bucketWater", "waterBucket", "foodWater", "fluidWater"};
 	
 	private final String BR = System.getProperty("line.separator");
 	
@@ -35,6 +36,7 @@ public class FFConfig {
 			Property wheatListP = cfg.get("oredictionary", "Wheat", wheatList);
 			Property riceListP = cfg.get("oredictionary", "Rice", riceList);
 			Property seedListP = cfg.get("oredictionary", "Seed", seedList);
+			Property waterListP = cfg.get("oredictionary", "Water", waterList);
 			
 			saltList = saltListP.getStringList();
 			sugarList = sugarListP.getStringList();
@@ -43,6 +45,7 @@ public class FFConfig {
 			wheatList = wheatListP.getStringList();
 			riceList = riceListP.getStringList();
 			seedList = seedListP.getStringList();
+			waterList = waterListP.getStringList();
 			
 			
 		}

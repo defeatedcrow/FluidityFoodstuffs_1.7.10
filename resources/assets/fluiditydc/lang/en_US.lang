@@ -5,6 +5,7 @@ item.fluiditydc.sack_milk.name=Milk Pack
 item.fluiditydc.sack_wheat.name=Wheat Sack
 item.fluiditydc.sack_rice.name=Rice Sack
 item.fluiditydc.sack_seed.name=Seed Sack
+item.fluiditydc.sack_water.name=Water Pack
 
 item.fluiditydc.bucket_flour.name=Flour Bucket
 item.fluiditydc.bucket_salt.name=Salt Bucket
@@ -20,6 +21,9 @@ tile.fluiditydc.block_wheat.name=Fluidity Wheat
 tile.fluiditydc.block_rice.name=Fluidity Rice
 tile.fluiditydc.block_seed.name=Fluidity Seed
 tile.fluiditydc.block_milk.name=Fluidity Milk
+
+tile.fluiditydc.IBC.name=IBC
+tile.fluiditydc.fluid_hopper.name=Fluid Hopper
 
 fluid.fluid_flour=Flour
 fluid.fluid_salt=Salt

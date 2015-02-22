@@ -18,6 +18,7 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import defeatedcrow.addonforamt.fluidity.event.*;
 import defeatedcrow.addonforamt.fluidity.integration.*;
 import defeatedcrow.addonforamt.fluidity.recipe.*;
@@ -25,7 +26,7 @@ import defeatedcrow.addonforamt.fluidity.recipe.*;
 @Mod(
 		modid = "FluidityDC",
 		name = "FluidityFoodstuffs",
-		version = "1.7.10_1.0a",
+		version = "1.7.10_1.0b",
 		dependencies = "required-after:Forge@[10.13.0.1207,);after:DCsAppleMilk"
 		)
 public class FluidityCore {
@@ -41,6 +42,7 @@ public class FluidityCore {
 	
 	public static final CreativeTabs fluidity = new CreativeTabFF("fluidity");
 	
+	//foodstaffs
 	public static Item flourCont;
 	public static Item emptySack;
 	
@@ -67,6 +69,15 @@ public class FluidityCore {
 	public static Item riceBucket;
 	public static Item seedBucket;
 	
+	//gadgets
+	public static Block fluidIBC;
+	public static Block fluidHopper;
+	
+	public static int renderIBC;
+	public static int renderFHopper;
+	
+	public static int guiFHopper;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -75,6 +86,7 @@ public class FluidityCore {
 		FFConfig.config(cfg);
 		
 		MaterialRegister.addItem();
+		MaterialRegister.addBlock();
 		MaterialRegister.addFluid();
 		proxy.registerFluidTex();
 	}
@@ -89,6 +101,13 @@ public class FluidityCore {
 		OreRegister.load();
 		BasicRecipe.addRecipe();
 		
+		//render
+		renderIBC = proxy.getRenderID();
+		renderFHopper = proxy.getRenderID();
+		proxy.registerRenderers();
+		proxy.registerTileEntity();
+		
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 	}
 	
 	@EventHandler
@@ -108,9 +127,6 @@ public class FluidityCore {
 	        }
 	    }
 		
-		
-		
-		
 		//ore handling
 		OreGetter.listSetUp();
 		OreGetter.registerListItems();
@@ -124,11 +140,7 @@ public class FluidityCore {
 		logger.info("Wheat : " + OreGetter.getList(4).size());
 		logger.info("Rice : " + OreGetter.getList(5).size());
 		logger.info("Seed : " + OreGetter.getList(6).size());
-		
-		for (ItemStack item : OreGetter.getList(2))
-		{
-			logger.info("Sugar Item : " + item.toString());
-		}
+		logger.info("Water : " + OreGetter.getList(7).size());
 		
 		CustomizeVanillaRecipe.initCustomize();
 	}

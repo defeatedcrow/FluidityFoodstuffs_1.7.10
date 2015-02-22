@@ -9,9 +9,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import mods.defeatedcrow.api.recipe.IProsessorRecipe;
+import mods.defeatedcrow.api.recipe.IProcessorRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.DCsAppleMilk;
+import mods.defeatedcrow.plugin.LoadModHandler;
 import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
 import defeatedcrow.addonforamt.fluidity.recipe.CustomizeVanillaRecipe;
 import defeatedcrow.addonforamt.fluidity.recipe.IMCReceptor;
@@ -23,11 +24,13 @@ public class AMTIntegration {
 	public static void load()
 	{
 		//除外対象
-		IMCReceptor.getExclusionList().add(new ItemStack(DCsAppleMilk.woodBox, 1, OreDictionary.WILDCARD_VALUE));
-		IMCReceptor.getExclusionList().add(new ItemStack(DCsAppleMilk.wipeBox2, 1, OreDictionary.WILDCARD_VALUE));
-		IMCReceptor.getExclusionList().add(new ItemStack(DCsAppleMilk.vegiBag, 1, OreDictionary.WILDCARD_VALUE));
-		IMCReceptor.getExclusionList().add(new ItemStack(DCsAppleMilk.mobBlock, 1, OreDictionary.WILDCARD_VALUE));
 		IMCReceptor.getExclusionList().add(new ItemStack(DCsAppleMilk.moromi, 1, 1));
+		
+		ItemStack momijiMilk = LoadModHandler.getItem("milk180");
+		if (momijiMilk != null)
+		{
+			IMCReceptor.getExclusionList().add(momijiMilk);
+		}
 		
 		//レシピの個別追加
 		GameRegistry.addRecipe(
@@ -67,11 +70,12 @@ public class AMTIntegration {
 	    			  "foodSugar"
 					 }));
 		
-		//レシピ削除
-		List<IProsessorRecipe> recipesP = new ArrayList<IProsessorRecipe>((List<IProsessorRecipe>)RecipeRegisterManager.prosessorRecipe.getRecipes());
-		ArrayList<IProsessorRecipe> remove = new ArrayList<IProsessorRecipe>();
 		
-		for (IProsessorRecipe recipe : recipesP)
+		//レシピ削除
+		List<IProcessorRecipe> recipesP = new ArrayList<IProcessorRecipe>((List<IProcessorRecipe>)RecipeRegisterManager.processorRecipe.getRecipes());
+		ArrayList<IProcessorRecipe> remove = new ArrayList<IProcessorRecipe>();
+		
+		for (IProcessorRecipe recipe : recipesP)
 		{
 			if (CustomizeVanillaRecipe.itemMatches(recipe.getOutput(), new ItemStack(DCsAppleMilk.mincedFoods, 1, 3), false))
 			{
@@ -79,14 +83,17 @@ public class AMTIntegration {
 			}
 		}
 		
-		RecipeRegisterManager.prosessorRecipe.getRecipes().removeAll(remove);
+		RecipeRegisterManager.processorRecipe.getRecipes().removeAll(remove);
 		
 		//レシピ追加
-		RecipeRegisterManager.prosessorRecipe.addRecipe(new ItemStack(DCsAppleMilk.mincedFoods, 3, 3), true, null,
+		RecipeRegisterManager.processorRecipe.addRecipe(new ItemStack(DCsAppleMilk.mincedFoods, 3, 3), true, null,
 				new Object[]{"cropWheat", "cropWheat", "cropWheat"});
 		
-		RecipeRegisterManager.prosessorRecipe.addRecipe(new ItemStack(FluidityCore.flourCont, 3, 0), true, null,
+		RecipeRegisterManager.processorRecipe.addRecipe(new ItemStack(FluidityCore.flourCont, 3, 0), true, null,
 				new Object[]{"cropWheat"});
+		
+		//その他連携レシピ
+		RecipeRegisterManager.plateRecipe.register(new ItemStack(FluidityCore.flourCont, 1, 0), new ItemStack(Items.bread), 60, true);
 	}
 
 }

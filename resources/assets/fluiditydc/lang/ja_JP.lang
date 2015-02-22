@@ -5,6 +5,7 @@ item.fluiditydc.sack_milk.name=牛乳パック
 item.fluiditydc.sack_wheat.name=麦穂袋
 item.fluiditydc.sack_rice.name=米袋
 item.fluiditydc.sack_seed.name=種袋
+item.fluiditydc.sack_water.name=水パック
 
 item.fluiditydc.bucket_flour.name=小麦粉バケツ
 item.fluiditydc.bucket_salt.name=食塩バケツ
@@ -20,6 +21,9 @@ tile.fluiditydc.block_wheat.name=流体小麦
 tile.fluiditydc.block_rice.name=流体米粒
 tile.fluiditydc.block_seed.name=流体種
 tile.fluiditydc.block_milk.name=流体ミルク
+
+tile.fluiditydc.IBC.name=1tコンテナ
+tile.fluiditydc.fluid_hopper.name=流体ホッパー
 
 fluid.fluid_flour=小麦粉
 fluid.fluid_salt=食塩

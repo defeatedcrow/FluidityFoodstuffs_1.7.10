@@ -18,6 +18,7 @@ public class OreGetter {
 	private static ArrayList<ItemStack> wheats = new ArrayList<ItemStack>();
 	private static ArrayList<ItemStack> rices = new ArrayList<ItemStack>();
 	private static ArrayList<ItemStack> seeds = new ArrayList<ItemStack>();
+	private static ArrayList<ItemStack> waters = new ArrayList<ItemStack>();
 	
 	private static Map<Integer, ArrayList<ItemStack>> lists = new HashMap<Integer, ArrayList<ItemStack>>();
 	
@@ -30,11 +31,12 @@ public class OreGetter {
 		lists.put(4, wheats);
 		lists.put(5, rices);
 		lists.put(6, seeds);
+		lists.put(7, waters);
 	}
 	
 	public static ArrayList<ItemStack> getList(int i)
 	{
-		MathHelper.clamp_int(i, 0, 6);
+		MathHelper.clamp_int(i, 0, 7);
 		return lists.get(i);
 	}
 	
@@ -47,6 +49,7 @@ public class OreGetter {
 		registerOres(4, FFConfig.wheatList);
 		registerOres(5, FFConfig.riceList);
 		registerOres(6, FFConfig.seedList);
+		registerOres(7, FFConfig.waterList);
 	}
 	
 	public static void integrateOreDic()
@@ -58,6 +61,7 @@ public class OreGetter {
 		registerIntegrateDic(wheats, FFConfig.wheatList);
 		registerIntegrateDic(rices, FFConfig.riceList);
 		registerIntegrateDic(seeds, FFConfig.seedList);
+		registerIntegrateDic(waters, FFConfig.waterList);
 	}
 	
 	private static void registerOres(int i, String[] names)

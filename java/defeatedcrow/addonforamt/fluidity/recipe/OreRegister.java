@@ -18,6 +18,7 @@ public class OreRegister {
 		OreDictionary.registerOre("foodWheat", new ItemStack(FluidityCore.flourCont, 1, 4));
 		OreDictionary.registerOre("foodRice", new ItemStack(FluidityCore.flourCont, 1, 5));
 		OreDictionary.registerOre("foodSeed", new ItemStack(FluidityCore.flourCont, 1, 6));
+		OreDictionary.registerOre("foodWater", new ItemStack(FluidityCore.flourCont, 1, 7));
 		
 		OreDictionary.registerOre("bucketFlour", new ItemStack(FluidityCore.flourBucket, 1, 0));
 		OreDictionary.registerOre("bucketSalt", new ItemStack(FluidityCore.saltBucket, 1, 0));
@@ -28,6 +29,7 @@ public class OreRegister {
 		
 		//vanilla items
 		OreDictionary.registerOre("bucketMilk", new ItemStack(Items.milk_bucket, 1, 0));
+		OreDictionary.registerOre("bucketWater", new ItemStack(Items.water_bucket, 1, 0));
 		OreDictionary.registerOre("cropWheat", new ItemStack(Items.wheat, 1, 0));
 		OreDictionary.registerOre("foodSugar", new ItemStack(Items.sugar, 1, 0));
 		OreDictionary.registerOre("foodSeed", new ItemStack(Items.wheat_seeds, 1, 0));
