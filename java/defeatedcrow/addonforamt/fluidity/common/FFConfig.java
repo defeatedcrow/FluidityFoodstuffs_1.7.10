@@ -2,6 +2,7 @@ package defeatedcrow.addonforamt.fluidity.common;
 
 import java.util.ArrayList;
 
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
@@ -17,6 +18,8 @@ public class FFConfig {
 	public static String[] riceList = {"rice", "Rice", "cropRice", "foodRice"};
 	public static String[] seedList = {"seed", "Seed", "cropSeed", "foodSeed"};
 	public static String[] waterList = {"water", "bucketWater", "waterBucket", "foodWater", "fluidWater"};
+	
+	public static float IBCalpha = 0.8F;
 	
 	private final String BR = System.getProperty("line.separator");
 	
@@ -38,6 +41,8 @@ public class FFConfig {
 			Property seedListP = cfg.get("oredictionary", "Seed", seedList);
 			Property waterListP = cfg.get("oredictionary", "Water", waterList);
 			
+			Property ibca = cfg.get("render setting", "IBC_alpha", IBCalpha);
+			
 			saltList = saltListP.getStringList();
 			sugarList = sugarListP.getStringList();
 			milkList = milkListP.getStringList();
@@ -46,6 +51,9 @@ public class FFConfig {
 			riceList = riceListP.getStringList();
 			seedList = seedListP.getStringList();
 			waterList = waterListP.getStringList();
+			
+			IBCalpha = MathHelper.clamp_float((float) ibca.getDouble(), 0.0F, 1.0F);
+			
 			
 			
 		}

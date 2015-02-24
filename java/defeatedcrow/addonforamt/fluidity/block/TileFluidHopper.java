@@ -1,10 +1,16 @@
 package defeatedcrow.addonforamt.fluidity.block;
 
+import java.util.List;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.command.IEntitySelector;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,6 +21,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidBase;
@@ -191,15 +198,21 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		{
 			if (this.coolTime == 0)
 			{
+				//GUI
 				this.drainContainer();
 				this.fillContainer();
+				//ブロックからの搬入出
 				this.insertFromBlock();
+				//IInventory
 				this.insertItemInHopper();
 				this.extractItemFromHopper();
+				//Entity
+				
 				
 				this.coolTime = MAX_COOLTIME;
 			}
 			
+			//IFluidHandler
 			this.insertFluidInHopper();
 			this.extractFluidFromHopper();
 			
@@ -266,60 +279,106 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 	private void insertFluidInHopper()
 	{
 		TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+		List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, 
+				AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
 		int ext = this.extractAmount()/MAX_COOLTIME;
+		IFluidHandler target = null;
+		EntityCow cow = null;
 		
 		if (tile != null)
 		{
 			if (tile instanceof IFluidHandler)
 			{
-				FluidStack current = this.productTank.getFluid();
-				IFluidHandler tank = (IFluidHandler) tile;
-				if (current != null)
+				target = (IFluidHandler) tile;
+			}
+		}
+		else if (entities != null && !entities.isEmpty())
+		{
+			
+			for (Entity ent : entities)
+			{
+				if (ent != null && ent instanceof IFluidHandler)
 				{
-					FluidStack drn = new FluidStack(current.getFluid(), ext);
-					FluidStack drn2 = tank.drain(ForgeDirection.DOWN, drn, false);
-					int fillAmount = 0;
-					if (drn2 != null)
-					{
-						int f1 = this.productTank.getCapacity() - current.amount;
-						int f2 = Math.min(f1, drn2.amount);
-						fillAmount = Math.min(f2, ext);
-					}
-					
-					if (fillAmount > 0)
-					{
-						tank.drain(ForgeDirection.DOWN, fillAmount, true);
-						this.productTank.fill(drn2, true);
-						return;
-					}
-					
+					target = (IFluidHandler)ent;
+					break;
 				}
-				else
+				else if (ent != null && ent instanceof EntityCow)
 				{
-					FluidTankInfo[] info = tank.getTankInfo(ForgeDirection.DOWN);
-					if (info == null) return; 
-					FluidStack drn = null;
-					int fillAmount = 0;
-					for (int i = 0 ; i < info.length ; i++)
-					{
-						if (info[i].fluid != null)
-						{
-							drn = info[i].fluid.copy();
-							fillAmount = Math.min(drn.amount, ext);
-							break;
-						}
-					}
-					
-					if (drn != null && fillAmount > 0)
-					{
-						tank.drain(ForgeDirection.DOWN, fillAmount, true);
-						this.productTank.fill(new FluidStack(drn.getFluid(), fillAmount), true);
-						return;
-					}
+					cow = (EntityCow) ent;
+					break;
 				}
 			}
-			
 		}
+		
+		if (target != null)
+		{
+			FluidStack current = this.productTank.getFluid();
+			if (current != null)
+			{
+				FluidStack drn = new FluidStack(current.getFluid(), ext);
+				FluidStack drn2 = target.drain(ForgeDirection.DOWN, drn, false);
+				int fillAmount = 0;
+				if (drn2 != null)
+				{
+					int f1 = this.productTank.getCapacity() - current.amount;
+					int f2 = Math.min(f1, drn2.amount);
+					fillAmount = Math.min(f2, ext);
+				}
+				
+				if (fillAmount > 0)
+				{
+					target.drain(ForgeDirection.DOWN, fillAmount, true);
+					this.productTank.fill(drn2, true);
+					return;
+				}
+				
+			}
+			else
+			{
+				FluidTankInfo[] info = target.getTankInfo(ForgeDirection.DOWN);
+				if (info == null) return; 
+				FluidStack drn = null;
+				int fillAmount = 0;
+				for (int i = 0 ; i < info.length ; i++)
+				{
+					if (info[i].fluid != null)
+					{
+						drn = info[i].fluid.copy();
+						fillAmount = Math.min(drn.amount, ext);
+						break;
+					}
+				}
+				
+				if (drn != null && fillAmount > 0)
+				{
+					target.drain(ForgeDirection.DOWN, fillAmount, true);
+					this.productTank.fill(new FluidStack(drn.getFluid(), fillAmount), true);
+					return;
+				}
+			}
+		}
+		else if (cow != null && !cow.isChild() && this.extractAmount() > 0)
+		{
+			FluidStack current = this.productTank.getFluid();
+			FluidStack milk = new FluidStack(FluidityCore.milkFluid, 1);
+			if (current != null)
+			{
+				int f1 = this.productTank.getCapacity() - current.amount;
+				int fillAmount = Math.min(f1, milk.amount);
+				
+				if (fillAmount > 0)
+				{
+					this.productTank.fill(milk, true);
+					return;
+				}
+			}
+			else
+			{
+				this.productTank.fill(milk, true);
+				return;
+			}
+		}
+		
 	}
 	
 	private void insertItemInHopper()
@@ -444,30 +503,49 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 	private void extractFluidFromHopper()
 	{
 		TileEntity tile = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+		List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, 
+				AxisAlignedBB.getBoundingBox(xCoord, yCoord - 1.5D, zCoord, xCoord + 1, yCoord, zCoord + 1));
+		IFluidHandler target = null;
+		
 		int ext = this.extractAmount()/MAX_COOLTIME;
+		ext = Math.min(ext, this.productTank.getFluidAmount());
 		
 		if (tile != null)
 		{
 			if (tile instanceof IFluidHandler)
 			{
-				IFluidHandler tank = (IFluidHandler) tile;
-				FluidStack current = this.productTank.getFluid();
-				if (current != null)
+				target = (IFluidHandler) tile;
+			}
+		}
+		else if (entities != null && !entities.isEmpty())
+		{
+			for (Entity ent : entities)
+			{
+				if (ent != null && ent instanceof IFluidHandler)
 				{
-					FluidStack drn = new FluidStack(current.getFluid(), ext);
-					int fill = tank.fill(ForgeDirection.UP, drn, false);
-					FluidStack drn2 = new FluidStack(current.getFluid(), fill);
-					
-					if (fill > 0)
-					{
-						tank.fill(ForgeDirection.UP, drn2, true);
-						this.productTank.drain(fill, true);
-						return;
-					}
-					
+					target = (IFluidHandler)ent;
+					break;
 				}
 			}
-			
+		}
+		
+		if (target != null)
+		{
+			FluidStack current = this.productTank.getFluid();
+			if (current != null)
+			{
+				FluidStack drn = new FluidStack(current.getFluid(), ext);
+				int fill = target.fill(ForgeDirection.UP, drn, false);
+				FluidStack drn2 = new FluidStack(current.getFluid(), fill);
+				
+				if (fill > 0)
+				{
+					target.fill(ForgeDirection.UP, drn2, true);
+					this.productTank.drain(fill, true);
+					return;
+				}
+				
+			}
 		}
 	}
 	

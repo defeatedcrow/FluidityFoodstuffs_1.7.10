@@ -113,7 +113,7 @@ public class BlockFluidIBC extends BlockContainer {
     					}
     					
     					//プレイヤーの手持ちアイテムを減らす処理
-    					if (!par5EntityPlayer.capabilities.isCreativeMode && (itemstack.stackSize - 1) <= 0)
+    					if (!par5EntityPlayer.capabilities.isCreativeMode && (itemstack.stackSize--) <= 0)
     	                {
     	            		par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack)null);
     	                }
@@ -141,7 +141,7 @@ public class BlockFluidIBC extends BlockContainer {
         				 */
         				if (FluidContainerRegistry.isEmptyContainer(itemstack))
         				{
-        					ItemStack get = FluidContainerRegistry.fillFluidContainer(new FluidStack(fluid.getFluid(), 1000), itemstack);
+        					ItemStack get = FluidContainerRegistry.fillFluidContainer(new FluidStack(fluid.getFluid(), 1000), itemstack.copy());
         					if (get == null) return false;
         					
         					int amount = FluidContainerRegistry.getContainerCapacity(get);
@@ -154,19 +154,19 @@ public class BlockFluidIBC extends BlockContainer {
             				else
             				{
             					tile.drain(ForgeDirection.UNKNOWN, amount, true);
+            					
+            					//プレイヤーに、先に取得した「液体で満たされた容器アイテム」を与える処理
+            					if (!par5EntityPlayer.inventory.addItemStackToInventory(get.copy()))
+            		        	{
+            		        		par5EntityPlayer.entityDropItem(get.copy(), 1);
+            		        	}
+            					
+            					//プレイヤーの手持ちアイテムを減らす処理
+            					if (!par5EntityPlayer.capabilities.isCreativeMode && (par5EntityPlayer.inventory.getCurrentItem().stackSize--) <= 0)
+            	                {
+            	            		par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack)null);
+            	                }
             				}
-            				
-            				//プレイヤーに、先に取得した「液体で満たされた容器アイテム」を与える処理
-        					if (!par5EntityPlayer.inventory.addItemStackToInventory(get.copy()))
-        		        	{
-        		        		par5EntityPlayer.entityDropItem(get.copy(), 1);
-        		        	}
-            				
-            				//プレイヤーの手持ちアイテムを減らす処理
-        					if (!par5EntityPlayer.capabilities.isCreativeMode && (itemstack.stackSize - 1) <= 0)
-        	                {
-        	            		par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, (ItemStack)null);
-        	                }
         					
         					//更新を伝える処理
         					//TileEntityを更新した場合、このように更新処理を挟まないと見た目に反映しない。
@@ -176,10 +176,9 @@ public class BlockFluidIBC extends BlockContainer {
         	        		
         	        		//効果音の発生
         	        		par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
+        	        		
+        	        		return true;
         				}
-        				
-    	        		
-    	        		return true;
         			}
         			else
         			{

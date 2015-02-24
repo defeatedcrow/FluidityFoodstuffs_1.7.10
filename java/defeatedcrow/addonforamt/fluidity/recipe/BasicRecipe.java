@@ -274,6 +274,14 @@ public class BasicRecipe {
 		    			  Items.flint
 						 }));
 		}
+		
+		//MBTリセットレシピ
+		GameRegistry.addRecipe(
+				 new ShapelessOreRecipe(
+	    		  new ItemStack(FluidityCore.fluidIBC, 1, 0),
+	    		  new Object[]{
+	    			  FluidityCore.fluidIBC
+					 }));
 	}
 
 }

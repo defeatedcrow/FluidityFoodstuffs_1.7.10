@@ -13,6 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.relauncher.*;
 import defeatedcrow.addonforamt.fluidity.block.TileFluidIBC;
+import defeatedcrow.addonforamt.fluidity.common.FFConfig;
 
 /*
  * 桶の中身の部分を描写しているクラス。
@@ -135,12 +136,14 @@ public class RenderTileIBC extends TileEntitySpecialRenderer
             GL11.glPopMatrix();
     	}
     	
+    	float f = FFConfig.IBCalpha;
+    	
     	this.bindTexture(bodyTex);
 		GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor4f(1.5F, 1.5F, 1.5F, 0.8F);
+        GL11.glColor4f(1.5F, 1.5F, 1.5F, f);
         GL11.glTranslatef((float)par1 + 0.5F, (float)par2 + 1.5F, (float)par3 + 0.5F);
         GL11.glScalef(1.0F, -1.0F, -1.0F);
         GL11.glRotatef(0.0F, 0.0F, 0.0F, 0.0F);

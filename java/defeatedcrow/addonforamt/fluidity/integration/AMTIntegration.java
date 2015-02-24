@@ -7,6 +7,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import mods.defeatedcrow.api.recipe.IProcessorRecipe;
@@ -23,6 +24,10 @@ public class AMTIntegration {
 	
 	public static void load()
 	{
+		//Event登録
+		MinecraftForge.EVENT_BUS.register(new TeaMakerCrickEvent());
+		
+		
 		//除外対象
 		IMCReceptor.getExclusionList().add(new ItemStack(DCsAppleMilk.moromi, 1, 1));
 		
@@ -66,8 +71,8 @@ public class AMTIntegration {
 	    			  "cropWheat",
 	    			  "cropWheat",
 	    			  "cropWheat",
-	    			  "kouji",
-	    			  "foodSugar"
+	    			  "foodYeast",
+	    			  new ItemStack(Items.bucket)
 					 }));
 		
 		
@@ -94,6 +99,9 @@ public class AMTIntegration {
 		
 		//その他連携レシピ
 		RecipeRegisterManager.plateRecipe.register(new ItemStack(FluidityCore.flourCont, 1, 0), new ItemStack(Items.bread), 60, true);
+		
+		RecipeRegisterManager.processorRecipe.addRecipe(new ItemStack(DCsAppleMilk.EXItems, 24, 7), false, null,
+				new Object[]{Items.bucket});
 	}
 
 }
