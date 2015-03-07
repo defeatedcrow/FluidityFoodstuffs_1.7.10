@@ -1,3 +1,4 @@
+
 item.fluiditydc.sack_flour.name=小麦粉袋
 item.fluiditydc.sack_salt.name=食塩袋
 item.fluiditydc.sack_sugar.name=砂糖袋
@@ -24,6 +25,7 @@ tile.fluiditydc.block_milk.name=流体ミルク
 
 tile.fluiditydc.IBC.name=1tコンテナ
 tile.fluiditydc.fluid_hopper.name=流体ホッパー
+tile.fluiditydc.fluid_hopper_adv.name=電磁弁付き流体ホッパー
 
 fluid.fluid_flour=小麦粉
 fluid.fluid_salt=食塩
@@ -33,4 +35,11 @@ fluid.fluid_rice=米粒
 fluid.fluid_seed=種
 fluid.fluid_milk=牛乳
 
+fluiditydc.advfhopper.invname=電磁弁付き流体ホッパー
 
+defeatedcrow.fhopper.filter.set=流体フィルターをセットしました
+defeatedcrow.fhopper.filter.clear=流体フィルターを解除しました
+defeatedcrow.fhopper.mode.default=モード解除
+defeatedcrow.fhopper.mode.entity=エンティティ検知モード
+defeatedcrow.fhopper.mode.fluidtype=流体フィルターモード
+defeatedcrow.fhopper.mode.redstone=レッドストーンモード

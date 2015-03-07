@@ -9,8 +9,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import defeatedcrow.addonforamt.fluidity.block.TileFluidHopper;
-import defeatedcrow.addonforamt.fluidity.block.TileFluidIBC;
+import defeatedcrow.addonforamt.fluidity.block.*;
 import defeatedcrow.addonforamt.fluidity.common.CommonProxyFF;
 import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
 
@@ -36,6 +35,7 @@ public class ClientProxyFF extends CommonProxyFF {
 		
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(FluidityCore.fluidIBC), new RenderItemIBC());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(FluidityCore.fluidHopper), new RenderItemFHopper());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(FluidityCore.fluidHopperAdv), new RenderItemAdvFHopper());
 	}
 	
 	@Override
@@ -43,6 +43,7 @@ public class ClientProxyFF extends CommonProxyFF {
 	{
 		ClientRegistry.registerTileEntity(TileFluidIBC.class, "tileFluidIBC", new RenderTileIBC());
 		ClientRegistry.registerTileEntity(TileFluidHopper.class, "tileFluidHopper", new RenderTileFHopper());
+		ClientRegistry.registerTileEntity(TileAdvFluidHopper.class, "tileAdvFluidHopper", new RenderTileFHopperAdv());
 	}
 	
 	@Override

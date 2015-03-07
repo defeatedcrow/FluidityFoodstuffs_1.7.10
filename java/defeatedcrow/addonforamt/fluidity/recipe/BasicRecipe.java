@@ -235,6 +235,17 @@ public class BasicRecipe {
 	 						 'X', Items.iron_ingot,
 	 						 'Y', Items.slime_ball}));
 		
+		GameRegistry.addRecipe(
+	 			new ShapedOreRecipe(
+	 	    	new ItemStack(FluidityCore.fluidHopperAdv, 1, 0),
+	 	    	new Object[]{
+	 						 "X",
+	 						 "Y",
+	 						 "Z",
+	 						 'X', Blocks.daylight_detector,
+	 						 'Y', FluidityCore.fluidHopper,
+	 						 'Z', Items.comparator}));
+		
 		//バニラレシピの追加
 		GameRegistry.addRecipe(
 	 			new ShapedOreRecipe(

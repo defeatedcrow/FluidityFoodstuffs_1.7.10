@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import defeatedcrow.addonforamt.fluidity.block.BlockAdvFluidHopper;
 import defeatedcrow.addonforamt.fluidity.block.BlockFluidHopper;
 import defeatedcrow.addonforamt.fluidity.block.BlockFluidIBC;
 import defeatedcrow.addonforamt.fluidity.block.ItemBlockFluidContainer;
@@ -46,8 +47,13 @@ public class MaterialRegister {
 		.setBlockName("fluiditydc.fluid_hopper")
 		.setCreativeTab(FluidityCore.fluidity);
 		
+		FluidityCore.fluidHopperAdv = new BlockAdvFluidHopper()
+		.setBlockName("fluiditydc.fluid_hopper_adv")
+		.setCreativeTab(FluidityCore.fluidity);
+		
 		GameRegistry.registerBlock(FluidityCore.fluidIBC, ItemBlockFluidContainer.class, "fluiditydc.IBC");
 		GameRegistry.registerBlock(FluidityCore.fluidHopper, "fluiditydc.fluidHopper");
+		GameRegistry.registerBlock(FluidityCore.fluidHopperAdv, "fluiditydc.fluidHopperAdv");
 	}
 	
 	public static void addFluid()

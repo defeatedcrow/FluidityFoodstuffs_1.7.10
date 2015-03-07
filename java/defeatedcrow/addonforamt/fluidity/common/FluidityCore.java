@@ -26,7 +26,7 @@ import defeatedcrow.addonforamt.fluidity.recipe.*;
 @Mod(
 		modid = "FluidityDC",
 		name = "FluidityFoodstuffs",
-		version = "1.7.10_1.0d",
+		version = "1.7.10_1.1a",
 		dependencies = "required-after:Forge@[10.13.0.1207,);after:DCsAppleMilk"
 		)
 public class FluidityCore {
@@ -72,11 +72,13 @@ public class FluidityCore {
 	//gadgets
 	public static Block fluidIBC;
 	public static Block fluidHopper;
+	public static Block fluidHopperAdv;
 	
 	public static int renderIBC;
 	public static int renderFHopper;
 	
 	public static int guiFHopper;
+	public static int guiAdvFHopper;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -143,6 +145,31 @@ public class FluidityCore {
 		logger.info("Water : " + OreGetter.getList(7).size());
 		
 		CustomizeVanillaRecipe.initCustomize();
+	}
+	
+	public int getMajorVersion()
+	{
+		return 1;
+	}
+	
+	public int getMinorVersion()
+	{
+		return 1;
+	}
+	
+	public String getRivision()
+	{
+		return "a";
+	}
+	
+	public String getModName()
+	{
+		return "FluidityFoodstuffs";
+	}
+	
+	public String getModID()
+	{
+		return "FluidityDC";
 	}
 
 }

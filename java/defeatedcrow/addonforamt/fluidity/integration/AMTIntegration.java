@@ -24,9 +24,12 @@ public class AMTIntegration {
 	
 	public static void load()
 	{
+		//Verチェック
+		if (DCsAppleMilk.instance.getMinorVersion() < 3) return;
+		
+		
 		//Event登録
 		MinecraftForge.EVENT_BUS.register(new TeaMakerCrickEvent());
-		
 		
 		//除外対象
 		IMCReceptor.getExclusionList().add(new ItemStack(DCsAppleMilk.moromi, 1, 1));

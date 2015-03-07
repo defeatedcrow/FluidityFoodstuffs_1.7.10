@@ -2,10 +2,8 @@ package defeatedcrow.addonforamt.fluidity.common;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
-import defeatedcrow.addonforamt.fluidity.block.TileFluidHopper;
-import defeatedcrow.addonforamt.fluidity.block.TileFluidIBC;
-import defeatedcrow.addonforamt.fluidity.gui.ContainerFHopper;
-import defeatedcrow.addonforamt.fluidity.gui.GuiFHopper;
+import defeatedcrow.addonforamt.fluidity.block.*;
+import defeatedcrow.addonforamt.fluidity.gui.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -35,6 +33,7 @@ public class CommonProxyFF implements IGuiHandler{
 	{
 		GameRegistry.registerTileEntity(TileFluidIBC.class, "tileFluidIBC");
 		GameRegistry.registerTileEntity(TileFluidHopper.class, "tileFluidHopper");
+		GameRegistry.registerTileEntity(TileAdvFluidHopper.class, "tileAdvFluidHopper");
 	}
 
 	@Override
@@ -47,6 +46,10 @@ public class CommonProxyFF implements IGuiHandler{
 		if (tileentity instanceof TileFluidHopper)
 		{
 			return new ContainerFHopper(player, (TileFluidHopper) tileentity);
+		}
+		if (tileentity instanceof TileAdvFluidHopper)
+		{
+			return new ContainerAdvFHopper(player, (TileAdvFluidHopper) tileentity);
 		}
 		
 		return null;
@@ -62,6 +65,10 @@ public class CommonProxyFF implements IGuiHandler{
 		if (tileentity instanceof TileFluidHopper)
 		{
 			return new GuiFHopper(player, (TileFluidHopper) tileentity);
+		}
+		if (tileentity instanceof TileAdvFluidHopper)
+		{
+			return new GuiAdvFHopper(player, (TileAdvFluidHopper) tileentity);
 		}
 		
 		return null;

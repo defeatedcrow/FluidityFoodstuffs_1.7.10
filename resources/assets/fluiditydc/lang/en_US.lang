@@ -1,3 +1,4 @@
+
 item.fluiditydc.sack_flour.name=Flour Sack
 item.fluiditydc.sack_salt.name=Salt Sack
 item.fluiditydc.sack_sugar.name=Sugar Sack
@@ -24,6 +25,9 @@ tile.fluiditydc.block_milk.name=Fluidity Milk
 
 tile.fluiditydc.IBC.name=IBC
 tile.fluiditydc.fluid_hopper.name=Fluid Hopper
+tile.fluiditydc.fluid_hopper_adv.name=Solenoid Valve Hopper
+
+fluiditydc.advfhopper.invname=Solenoid Valve Hopper
 
 fluid.fluid_flour=Flour
 fluid.fluid_salt=Salt
@@ -32,3 +36,10 @@ fluid.fluid_wheat=Wheat
 fluid.fluid_rice=Rice
 fluid.fluid_seed=Seed
 fluid.fluid_milk=Milk
+
+defeatedcrow.fhopper.filter.set=Fluid type filter
+defeatedcrow.fhopper.filter.clear=The fluid filter was cleared.
+defeatedcrow.fhopper.mode.default=Default Mode
+defeatedcrow.fhopper.mode.entity=Entity Detection Mode
+defeatedcrow.fhopper.mode.fluidtype=Fluid Type Filter Mode
+defeatedcrow.fhopper.mode.redstone=Redstone Mode

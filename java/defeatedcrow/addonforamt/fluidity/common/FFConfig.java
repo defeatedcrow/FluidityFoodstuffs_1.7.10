@@ -16,7 +16,7 @@ public class FFConfig {
 	public static String[] flourList = {"flour", "Flour", "foodFlour", "cookingFlour", "dustFlour", "dustWheat"};
 	public static String[] wheatList = {"wheat", "Wheat", "cropWheat", "foodWheat"};
 	public static String[] riceList = {"rice", "Rice", "cropRice", "foodRice"};
-	public static String[] seedList = {"seed", "Seed", "cropSeed", "foodSeed"};
+	public static String[] seedList = {"seedWheat", "cropSeed", "foodSeed"};
 	public static String[] waterList = {"water", "bucketWater", "waterBucket", "foodWater", "fluidWater"};
 	
 	public static float IBCalpha = 0.8F;

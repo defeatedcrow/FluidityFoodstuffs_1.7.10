@@ -203,11 +203,10 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 				this.fillContainer();
 				//ブロックからの搬入出
 				this.insertFromBlock();
+				this.extractToBlock();
 				//IInventory
 				this.insertItemInHopper();
 				this.extractItemFromHopper();
-				//Entity
-				
 				
 				this.coolTime = MAX_COOLTIME;
 			}
@@ -322,10 +321,10 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 				{
 					int f1 = this.productTank.getCapacity() - current.amount;
 					int f2 = Math.min(f1, drn2.amount);
-					fillAmount = Math.min(f2, ext);
+					fillAmount = Math.min(f2, ext); 
 				}
 				
-				if (fillAmount > 0)
+				if (fillAmount > 0 && target.canDrain(ForgeDirection.DOWN, drn2.getFluid()))
 				{
 					target.drain(ForgeDirection.DOWN, fillAmount, true);
 					this.productTank.fill(drn2, true);
@@ -339,7 +338,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 				if (info == null) return; 
 				FluidStack drn = null;
 				int fillAmount = 0;
-				for (int i = 0 ; i < info.length ; i++)
+				for (int i = info.length - 1 ; i >= 0 ; i--)
 				{
 					if (info[i].fluid != null)
 					{
@@ -349,7 +348,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 					}
 				}
 				
-				if (drn != null && fillAmount > 0)
+				if (drn != null && fillAmount > 0 && target.canDrain(ForgeDirection.DOWN, drn.getFluid()))
 				{
 					target.drain(ForgeDirection.DOWN, fillAmount, true);
 					this.productTank.fill(new FluidStack(drn.getFluid(), fillAmount), true);
@@ -378,7 +377,6 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 				return;
 			}
 		}
-		
 	}
 	
 	private void insertItemInHopper()
@@ -500,6 +498,29 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		}
 	}
 	
+	private void extractToBlock()
+	{
+		if (this.mode == 0) return;
+		
+		Block block = worldObj.getBlock(xCoord, yCoord - 1, zCoord);
+		
+		if (block instanceof BlockCauldron)
+		{
+			if (worldObj.getBlockMetadata(xCoord, yCoord - 1, zCoord) == 0)
+			{
+				FluidStack ret = this.productTank.getFluid();
+				if (ret == null) return;
+				else if (ret.getFluid() == FluidRegistry.WATER && ret.amount >= FluidContainerRegistry.BUCKET_VOLUME)
+				{
+					worldObj.setBlockMetadataWithNotify(xCoord, yCoord - 1, zCoord, 3, 3);
+					worldObj.playSoundEffect(xCoord, yCoord, zCoord, "random.pop", 0.4F, 1.8F);
+					this.productTank.drain(FluidContainerRegistry.BUCKET_VOLUME, true);
+					return;
+				}
+			}
+		}
+	}
+	
 	private void extractFluidFromHopper()
 	{
 		TileEntity tile = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
@@ -538,7 +559,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 				int fill = target.fill(ForgeDirection.UP, drn, false);
 				FluidStack drn2 = new FluidStack(current.getFluid(), fill);
 				
-				if (fill > 0)
+				if (fill > 0 && target.canFill(ForgeDirection.UP, drn2.getFluid()))
 				{
 					target.fill(ForgeDirection.UP, drn2, true);
 					this.productTank.drain(fill, true);

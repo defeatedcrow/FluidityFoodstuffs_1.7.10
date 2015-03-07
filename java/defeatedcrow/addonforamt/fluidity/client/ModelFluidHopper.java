@@ -21,6 +21,10 @@ public class ModelFluidHopper extends ModelBase
     ModelRenderer valve1;
     ModelRenderer valve2;
     ModelRenderer valve3;
+    
+    //for adv
+    ModelRenderer valve4;
+    ModelRenderer valve5;
   
   public ModelFluidHopper()
   {
@@ -93,6 +97,19 @@ public class ModelFluidHopper extends ModelBase
       valve3.setTextureSize(64, 32);
       valve3.mirror = true;
       setRotation(valve3, 0F, 0F, 0F);
+      
+      valve4 = new ModelRenderer(this, 17, 26);
+      valve4.addBox(-1F, 4F, -1F, 2, 2, 2);
+      valve4.setRotationPoint(3.5F, 16F, 0F);
+      valve4.setTextureSize(64, 32);
+      valve4.mirror = true;
+      setRotation(valve4, 0F, 0F, 0F);
+      valve5 = new ModelRenderer(this, 28, 25);
+      valve5.addBox(2F, -1.5F, -2F, 2, 3, 4);
+      valve5.setRotationPoint(0F, 21F, 0F);
+      valve5.setTextureSize(64, 32);
+      valve5.mirror = true;
+      setRotation(valve5, 0F, 0F, 0F);
   }
   
   public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
@@ -119,6 +136,14 @@ public class ModelFluidHopper extends ModelBase
     valve3.render(f5);
   }
   
+  public void renderSolenoidValve(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+  {
+    super.render(entity, f, f1, f2, f3, f4, f5);
+    setRotationAngles(f, f1, f2, f3, f4, f5);
+    valve4.render(f5);
+    valve5.render(f5);
+  }
+  
   private void setRotation(ModelRenderer model, float x, float y, float z)
   {
     model.rotateAngleX = x;
@@ -130,6 +155,7 @@ public class ModelFluidHopper extends ModelBase
   {
     super.setRotationAngles(f, f1, f2, f3, f4, f5, null);
     valve3.rotateAngleX = f3 / (180F / (float)Math.PI);
+    valve4.rotateAngleY = f3 / (180F / (float)Math.PI);
   }
 
 }

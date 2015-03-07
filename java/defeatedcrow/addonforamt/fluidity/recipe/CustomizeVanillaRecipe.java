@@ -407,12 +407,17 @@ public class CustomizeVanillaRecipe {
 				if ((ArrayList<ItemStack>)obj != null && !((ArrayList<ItemStack>)obj).isEmpty())
 				{
 					ItemStack item2 = ((ArrayList<ItemStack>)obj).get(0);
-					String str = OreDictionary.getOreName(OreDictionary.getOreIDs(item2)[0]);
-					inputs.add(c[i]);
-					inputs.add(str);
-					b = true;
+					int[] id = OreDictionary.getOreIDs(item2);
+					if (id.length > 1)
+					{
+						String str = OreDictionary.getOreName(OreDictionary.getOreIDs(item2)[0]);
+						inputs.add(c[i]);
+						inputs.add(str);
+						b = true;
+					}
 				}
-				else
+				
+				if (!b)
 				{
 					inputs.add(c[i]);
 					inputs.add("Unknown");
@@ -476,11 +481,16 @@ public class CustomizeVanillaRecipe {
 				if ((ArrayList<ItemStack>)obj != null && !((ArrayList<ItemStack>)obj).isEmpty())
 				{
 					ItemStack i = ((ArrayList<ItemStack>)obj).get(0);
-					String s = OreDictionary.getOreName(OreDictionary.getOreIDs(i)[0]);
-					inputs.add(s);
-					b = true;
+					int[] id = OreDictionary.getOreIDs(i);
+					if (id.length > 1)
+					{
+						String s = OreDictionary.getOreName(OreDictionary.getOreIDs(i)[0]);
+						inputs.add(s);
+						b = true;
+					}
 				}
-				else
+				
+				if (!b)
 				{
 					inputs.add("Unknown");
 					b = true;
