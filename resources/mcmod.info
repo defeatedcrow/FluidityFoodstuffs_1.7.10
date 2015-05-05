@@ -14,9 +14,9 @@
     "name":"FluidityFoodstuffs",
     "url":"http://forum.minecraftuser.jp/viewtopic.php?f=13&t=17657",
     "updateUrl":"",
-    "version":"1.7.10_1.1a",
+    "version":"1.7.10_1.2a",
     "requiredMods":[
-      "Minecraft Forge1.7.10 10.13.0.1207+"
+      "Minecraft Forge1.7.10 10.13.2.1291+"
     ]
   }
 ]

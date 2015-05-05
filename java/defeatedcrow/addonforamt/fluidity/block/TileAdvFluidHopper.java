@@ -114,8 +114,8 @@ public class TileAdvFluidHopper extends TileEntity implements IFluidHandler{
     
     public Fluid getFilterFluid()
     {
-    	return FluidRegistry.isFluidRegistered(FluidRegistry.getFluidName(filterFluid))
-    			? FluidRegistry.getFluid(filterFluid) : null;
+    	Fluid f = FluidRegistry.getFluid(filterFluid);
+    	return f != null ? FluidRegistry.getFluid(filterFluid) : null;
     }
     
     public int getFilterID()
@@ -136,18 +136,20 @@ public class TileAdvFluidHopper extends TileEntity implements IFluidHandler{
 		{
 			if (productTank.getFluid() == null)
 			{
-				productTank.setFluid(new FluidStack(val, 0));
+				productTank.setFluidById(val);
 			}
 			else
 			{
-				productTank.getFluid().fluidID = val;
+				int amo = productTank.getFluidAmount();
+				productTank.setFluidById(val);
+				productTank.getFluid().amount = amo;
 			}
 		}
 		else if (id == 1)//amount
 		{
 			if (productTank.getFluid() == null)
 			{
-				productTank.setFluid(new FluidStack(0, val));
+				productTank.setFluid((FluidStack) null);
 			}
 			else
 			{

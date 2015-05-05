@@ -159,18 +159,20 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		{
 			if (productTank.getFluid() == null)
 			{
-				productTank.setFluid(new FluidStack(val, 0));
+				productTank.setFluidById(val);
 			}
 			else
 			{
-				productTank.getFluid().fluidID = val;
+				int amo = productTank.getFluidAmount();
+				productTank.setFluidById(val);
+				productTank.getFluid().amount = amo;
 			}
 		}
 		else if (id == 1)//amount
 		{
 			if (productTank.getFluid() == null)
 			{
-				productTank.setFluid(new FluidStack(0, val));
+				productTank.setFluid((FluidStack) null);
 			}
 			else
 			{
@@ -359,7 +361,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		else if (cow != null && !cow.isChild() && this.extractAmount() > 0)
 		{
 			FluidStack current = this.productTank.getFluid();
-			FluidStack milk = new FluidStack(FluidityCore.milkFluid, 1);
+			FluidStack milk = new FluidStack(FluidityCore.milkFluid, 5);
 			if (current != null)
 			{
 				int f1 = this.productTank.getCapacity() - current.amount;
@@ -462,7 +464,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		{
 			IFluidBlock target = (IFluidBlock) block;
 			FluidStack get = target.drain(worldObj, xCoord, yCoord + 1, zCoord, false);
-			if (this.productTank.fill(get, false) == get.amount)
+			if (get != null && this.productTank.fill(get, false) == get.amount)
 			{
 				target.drain(worldObj, xCoord, yCoord + 1, zCoord, true);
 				this.productTank.fill(get, true);

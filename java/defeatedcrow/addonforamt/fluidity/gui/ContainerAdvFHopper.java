@@ -43,7 +43,7 @@ public class ContainerAdvFHopper extends Container {
 		super.addCraftingToCrafters(par1ICrafting);
 		if (this.tile.productTank.getFluid() != null)
 		{
-			par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.productTank.getFluid().fluidID);
+			par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.productTank.getFluid().getFluid().getID());
 			par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.productTank.getFluidAmount());
 		}
 		else
@@ -67,9 +67,9 @@ public class ContainerAdvFHopper extends Container {
 			
 			if (this.tile.productTank.getFluid() != null)
 			{
-				if (this.lastFluidID != this.tile.productTank.getFluid().fluidID)
+				if (this.lastFluidID != this.tile.productTank.getFluid().getFluid().getID())
 				{
-					icrafting.sendProgressBarUpdate(this, 0, this.tile.productTank.getFluid().fluidID);
+					icrafting.sendProgressBarUpdate(this, 0, this.tile.productTank.getFluid().getFluid().getID());
 				}
 				if (this.lastFluidAmount != this.tile.productTank.getFluidAmount())
 				{
@@ -77,7 +77,7 @@ public class ContainerAdvFHopper extends Container {
 				}
 				
 				this.lastFluidAmount = this.tile.productTank.getFluidAmount();
-				this.lastFluidID = this.tile.productTank.getFluid().fluidID;
+				this.lastFluidID = this.tile.productTank.getFluid().getFluid().getID();
 			}
 			else
 			{

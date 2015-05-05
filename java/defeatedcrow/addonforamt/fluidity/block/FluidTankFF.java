@@ -3,6 +3,7 @@ package defeatedcrow.addonforamt.fluidity.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -48,6 +49,18 @@ public class FluidTankFF extends FluidTank{
 		if (this.fluid != null && this.fluid.getFluid() != null)
 		{
 			this.fluid.amount = par1;
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void setFluidById(int par1)
+	{
+		Fluid f = FluidRegistry.getFluid(par1);
+		if (f != null){
+			this.fluid = new FluidStack(f, this.getFluidAmount());
+		}
+		else{
+			this.fluid = (FluidStack)null;
 		}
 	}
 }

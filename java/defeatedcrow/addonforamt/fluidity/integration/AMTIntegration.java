@@ -64,7 +64,7 @@ public class AMTIntegration {
 	    		  new ItemStack(FluidityCore.flourCont, 2, 0),
 	    		  new Object[]{
 	    			  "cropWheat",
-	    			  new ItemStack(DCsAppleMilk.DCgrater, 1, 32767)
+	    			  "toolGrater"
 					 }));
 		
 		GameRegistry.addRecipe(

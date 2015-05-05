@@ -16,6 +16,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -26,8 +27,8 @@ import defeatedcrow.addonforamt.fluidity.recipe.*;
 @Mod(
 		modid = "FluidityDC",
 		name = "FluidityFoodstuffs",
-		version = "1.7.10_1.1a",
-		dependencies = "required-after:Forge@[10.13.0.1207,);after:DCsAppleMilk"
+		version = "1.7.10_1.2a",
+		dependencies = "required-after:Forge@[10.13.2.1291,);after:DCsAppleMilk"
 		)
 public class FluidityCore {
 	
@@ -147,6 +148,12 @@ public class FluidityCore {
 		CustomizeVanillaRecipe.initCustomize();
 	}
 	
+	@EventHandler
+	public void postInit(FMLLoadCompleteEvent event)
+	{
+
+	}
+	
 	public int getMajorVersion()
 	{
 		return 1;
@@ -159,7 +166,7 @@ public class FluidityCore {
 	
 	public String getRivision()
 	{
-		return "a";
+		return "b";
 	}
 	
 	public String getModName()

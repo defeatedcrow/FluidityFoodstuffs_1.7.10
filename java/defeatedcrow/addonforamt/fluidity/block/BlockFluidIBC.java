@@ -205,52 +205,6 @@ public class BlockFluidIBC extends BlockContainer {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 	
-//	@Override
-//	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB aabb, List list, Entity entity)
-//    {
-//        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F);
-//        super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
-//        float f = 0.0675F;
-//        this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
-//        super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
-//        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
-//        super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
-//        this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-//        super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
-//        this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
-//        super.addCollisionBoxesToList(world, x, y, z, aabb, list, entity);
-//        this.setBlockBoundsForItemRender();
-//    }
-	
-//	@Override
-//	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
-//    {
-//        float f = 1.0F;
-//        TileFluidIBC tile = (TileFluidIBC) world.getTileEntity(x, y, z);
-//        if (tile != null && !world.isRemote)
-//        {
-//        	if (tile.productTank.isEmpty()) return;
-//        	
-//        	Fluid fluid = tile.productTank.getFluidType();
-//        	
-//        	
-//        	if (fluid.getTemperature() <= 295)//常温の液体
-//        	{
-//        		if (!world.isRemote && entity.isBurning())
-//                {
-//                    entity.extinguish();
-//                }
-//        	}
-//        	else if (fluid.getTemperature() > 800)//500度くらい
-//        	{
-//        		if (!world.isRemote && !entity.isBurning())
-//                {
-//                    entity.setFire(200);
-//                }
-//        	}
-//        }
-//    }
-	
 	/* 破壊時の情報保持 */
 	
 	@Override
@@ -314,7 +268,7 @@ public class BlockFluidIBC extends BlockContainer {
 				NBTTagCompound tag1 = new NBTTagCompound();
 				
 				tag1.setInteger("fdc.amount", fluid.amount);
-				tag1.setInteger("fdc.id", fluid.fluidID);
+				tag1.setInteger("fdc.id", fluid.getFluid().getID());
 				tag1.setString("fdc.type", fluid.getLocalizedName());
 				drop.getEntityItem().setTagCompound(tag1);
 			}
