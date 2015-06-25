@@ -11,7 +11,8 @@ public class ContainerFHopper extends Container {
 	
 	private TileFluidHopper tile;
 	
-	private int lastFluidAmount;
+	private int lastUpper;
+	private int lastUnder;
 	private int lastFluidID;
 	
 	public ContainerFHopper(EntityPlayer player, TileFluidHopper hopper)
@@ -45,12 +46,14 @@ public class ContainerFHopper extends Container {
 		if (this.tile.productTank.getFluid() != null)
 		{
 			par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.productTank.getFluid().getFluid().getID());
-			par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.productTank.getFluidAmount());
+			par1ICrafting.sendProgressBarUpdate(this, 1, tile.getUnder());
+			par1ICrafting.sendProgressBarUpdate(this, 2, tile.getUpper());
 		}
 		else
 		{
 			par1ICrafting.sendProgressBarUpdate(this, 0, 0);
 			par1ICrafting.sendProgressBarUpdate(this, 1, 0);
+			par1ICrafting.sendProgressBarUpdate(this, 2, 0);
 		}
 	}
 	
@@ -69,12 +72,17 @@ public class ContainerFHopper extends Container {
 				{
 					icrafting.sendProgressBarUpdate(this, 0, this.tile.productTank.getFluid().getFluid().getID());
 				}
-				if (this.lastFluidAmount != this.tile.productTank.getFluidAmount())
+				if (this.lastUnder!= this.tile.getUnder())
 				{
-					icrafting.sendProgressBarUpdate(this, 1, this.tile.productTank.getFluidAmount());
+					icrafting.sendProgressBarUpdate(this, 1, this.tile.getUnder());
+				}
+				if (this.lastUpper != this.tile.getUpper())
+				{
+					icrafting.sendProgressBarUpdate(this, 2, this.tile.getUpper());
 				}
 				
-				this.lastFluidAmount = this.tile.productTank.getFluidAmount();
+				this.lastUnder = this.tile.getUnder();
+				this.lastUpper = this.tile.getUpper();
 				this.lastFluidID = this.tile.productTank.getFluid().getFluid().getID();
 			}
 			else
@@ -83,12 +91,17 @@ public class ContainerFHopper extends Container {
 				{
 					icrafting.sendProgressBarUpdate(this, 0, 0);
 				}
-				if (this.lastFluidAmount != 0)
+				if (this.lastUnder != 0)
 				{
 					icrafting.sendProgressBarUpdate(this, 1, 0);
 				}
+				if (this.lastUpper != 0)
+				{
+					icrafting.sendProgressBarUpdate(this, 2, 0);
+				}
 				
-				this.lastFluidAmount = 0;
+				this.lastUnder = 0;
+				this.lastUpper = 0;
 				this.lastFluidID = 0;
 			}
 		}
@@ -97,7 +110,7 @@ public class ContainerFHopper extends Container {
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int par1, int par2)
 	{
-		if (par1 == 0 || par1 == 1)
+		if (par1 == 0 || par1 == 1 || par1 == 2)
 		{
 			this.tile.getGuiFluidUpdate(par1, par2);
 		}

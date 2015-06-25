@@ -33,7 +33,7 @@ public class GuiFHopper extends GuiContainer {
 		boolean b1 = this.func_146978_c(67, 59, 16, 16, par1, par2);
 		if (b1)
 		{
-			int rate = this.tile.extractAmount() / this.tile.MAX_COOLTIME;
+			int rate = this.tile.extractAmount();
 			ArrayList<String> list1 = new ArrayList<String>();
 			if (rate == 0)
 			{

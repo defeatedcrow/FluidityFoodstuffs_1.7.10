@@ -4,6 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import defeatedcrow.addonforamt.fluidity.common.FFConfig;
 import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
@@ -36,7 +37,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class TileFluidHopper extends TileEntity implements IFluidHandler, ISidedInventory {
 	
 	//このTileEntityに持たせる液体タンク。引数は最大容量。
-	public FluidTankFF productTank = new FluidTankFF(80000);
+	public FluidTankFF productTank = new FluidTankFF(FFConfig.sizeFluidHopper);
 	
 	public final int MAX_COOLTIME = 10;
 	private int coolTime = 0;
@@ -62,7 +63,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 			}
 		}
         
-        this.productTank = new FluidTankFF(80000);
+        this.productTank = new FluidTankFF(FFConfig.sizeFluidHopper);
 		if (par1NBTTagCompound.hasKey("ProductTank")) {
 		    this.productTank.readFromNBT(par1NBTTagCompound.getCompoundTag("ProductTank"));
 		}
@@ -125,15 +126,15 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
     {
     	if (this.mode == 1)
     	{
-    		return 1000;
+    		return FFConfig.flowRateBase;
     	}
     	else if (this.mode == 2)
     	{
-    		return 4000;
+    		return FFConfig.flowRateBase * 4;
     	}
     	else if (this.mode == 3)
     	{
-    		return 16000;
+    		return FFConfig.flowRateBase * 16;
     	}
     	else
     	{
@@ -165,10 +166,9 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 			{
 				int amo = productTank.getFluidAmount();
 				productTank.setFluidById(val);
-				productTank.getFluid().amount = amo;
 			}
 		}
-		else if (id == 1)//amount
+		else if (id == 1)//amount under
 		{
 			if (productTank.getFluid() == null)
 			{
@@ -176,9 +176,47 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 			}
 			else
 			{
-				productTank.getFluid().amount = val;
+				int currentUpper = productTank.getFluid().amount >>> 4;
+				int cur = currentUpper << 4;
+				int get = val & 15;
+				get += cur;
+				get = Math.min(get, productTank.getCapacity());
+				productTank.getFluid().amount = get;
 			}
 		}
+		else if (id == 2)//amount upper
+		{
+			if (productTank.getFluid() == null)
+			{
+				productTank.setFluid((FluidStack) null);
+			}
+			else
+			{
+				int current = productTank.getFluid().amount & 15;
+				int get = val << 4;
+				get += current;
+				get = Math.min(get, productTank.getCapacity());
+				productTank.getFluid().amount = get;
+			}
+		}
+	}
+	
+	public int getUpper() {
+    	if (productTank.getFluid() == null){
+    		return 0;
+    	}
+		int i = productTank.getFluid().amount;
+		int get = i >>> 4;
+		return get;
+	}
+
+	public int getUnder() {
+		if (productTank.getFluid() == null){
+    		return 0;
+    	}
+		int i = productTank.getFluid().amount;
+		int get = i & 15;
+		return get;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -216,6 +254,10 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 			//IFluidHandler
 			this.insertFluidInHopper();
 			this.extractFluidFromHopper();
+			
+			if (productTank.getFluid() != null && productTank.getFluidAmount() > productTank.getCapacity()){
+				productTank.setAmount(productTank.getCapacity());
+			}
 			
 			this.onServerUpdate();
 		}
@@ -282,7 +324,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		TileEntity tile = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
 		List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, 
 				AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
-		int ext = this.extractAmount()/MAX_COOLTIME;
+		int ext = this.extractAmount();
 		IFluidHandler target = null;
 		EntityCow cow = null;
 		
@@ -361,7 +403,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		else if (cow != null && !cow.isChild() && this.extractAmount() > 0)
 		{
 			FluidStack current = this.productTank.getFluid();
-			FluidStack milk = new FluidStack(FluidityCore.milkFluid, 5);
+			FluidStack milk = new FluidStack(FluidityCore.milkFluid, 50);
 			if (current != null)
 			{
 				int f1 = this.productTank.getCapacity() - current.amount;
@@ -530,7 +572,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 				AxisAlignedBB.getBoundingBox(xCoord, yCoord - 1.5D, zCoord, xCoord + 1, yCoord, zCoord + 1));
 		IFluidHandler target = null;
 		
-		int ext = this.extractAmount()/MAX_COOLTIME;
+		int ext = this.extractAmount();
 		ext = Math.min(ext, this.productTank.getFluidAmount());
 		
 		if (tile != null)
@@ -773,7 +815,8 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 	
 	public short getFluidGauge()
     {
-    	return (short) (productTank.getFluidAmount() / 800);
+		int max = FFConfig.sizeFluidHopper / 100;
+    	return (short) (productTank.getFluidAmount() / max);
     }
 	
 	/* ISidedInventory */

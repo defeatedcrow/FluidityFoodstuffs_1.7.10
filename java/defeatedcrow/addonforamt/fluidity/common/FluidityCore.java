@@ -27,7 +27,7 @@ import defeatedcrow.addonforamt.fluidity.recipe.*;
 @Mod(
 		modid = "FluidityDC",
 		name = "FluidityFoodstuffs",
-		version = "1.7.10_1.2a",
+		version = "1.7.10_1.2d",
 		dependencies = "required-after:Forge@[10.13.2.1291,);after:DCsAppleMilk"
 		)
 public class FluidityCore {
@@ -161,12 +161,12 @@ public class FluidityCore {
 	
 	public int getMinorVersion()
 	{
-		return 1;
+		return 2;
 	}
 	
 	public String getRivision()
 	{
-		return "b";
+		return "d";
 	}
 	
 	public String getModName()

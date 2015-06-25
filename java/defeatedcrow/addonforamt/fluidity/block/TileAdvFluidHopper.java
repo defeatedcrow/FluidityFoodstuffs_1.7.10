@@ -4,6 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import defeatedcrow.addonforamt.fluidity.common.FFConfig;
 import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCauldron;
@@ -35,8 +36,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class TileAdvFluidHopper extends TileEntity implements IFluidHandler{
 	
 	//このTileEntityに持たせる液体タンク。引数は最大容量。
-	public FluidTankFF productTank = new FluidTankFF(80000);
-	public final int FLOW_RATE = 400;
+	public FluidTankFF productTank = new FluidTankFF(FFConfig.sizeAdvHopper);
+	public final int FLOW_RATE = FFConfig.flowRateAdv;
 	
 	//Mode制御用
 	private Mode mode = Mode.Default;
@@ -51,7 +52,7 @@ public class TileAdvFluidHopper extends TileEntity implements IFluidHandler{
     {
         super.readFromNBT(par1NBTTagCompound);
         
-        this.productTank = new FluidTankFF(80000);
+        this.productTank = new FluidTankFF(FFConfig.sizeAdvHopper);
 		if (par1NBTTagCompound.hasKey("ProductTank")) {
 		    this.productTank.readFromNBT(par1NBTTagCompound.getCompoundTag("ProductTank"));
 		}
@@ -142,10 +143,9 @@ public class TileAdvFluidHopper extends TileEntity implements IFluidHandler{
 			{
 				int amo = productTank.getFluidAmount();
 				productTank.setFluidById(val);
-				productTank.getFluid().amount = amo;
 			}
 		}
-		else if (id == 1)//amount
+		else if (id == 1)//amount under
 		{
 			if (productTank.getFluid() == null)
 			{
@@ -153,22 +153,60 @@ public class TileAdvFluidHopper extends TileEntity implements IFluidHandler{
 			}
 			else
 			{
-				productTank.getFluid().amount = val;
+				int currentUpper = productTank.getFluid().amount >>> 4;
+				int cur = currentUpper << 4;
+				int get = val & 15;
+				get += cur;
+				get = Math.min(get, productTank.getCapacity());
+				productTank.getFluid().amount = get;
 			}
 		}
-		else if (id == 2)//mode
+		else if (id == 2)//amount upper
+		{
+			if (productTank.getFluid() == null)
+			{
+				productTank.setFluid((FluidStack) null);
+			}
+			else
+			{
+				int current = productTank.getFluid().amount & 15;
+				int get = val << 4;
+				get += current;
+				get = Math.min(get, productTank.getCapacity());
+				productTank.getFluid().amount = get;
+			}
+		}
+		else if (id == 3)//mode
 		{
 			this.setMode(val);
 		}
-		else if (id == 3)//active
+		else if (id == 4)//active
 		{
 			if (val == 0) this.lastActivated = false;
 			else this.lastActivated = true;
 		}
-		else if (id == 4)//filter
+		else if (id == 5)//filter
 		{
-			this.filterFluid = val;;
+			this.filterFluid = val;
 		}
+	}
+    
+    public int getUpper() {
+    	if (productTank.getFluid() == null || productTank.isEmpty()){
+    		return 0;
+    	}
+		int i = productTank.getFluid().amount;
+		int get = i >>> 4;
+		return get;
+	}
+
+	public int getUnder() {
+		if (productTank.getFluid() == null || productTank.isEmpty()){
+    		return 0;
+    	}
+		int i = productTank.getFluid().amount;
+		int get = i & 15;
+		return get;
 	}
     
     @SideOnly(Side.CLIENT)
@@ -196,6 +234,10 @@ public class TileAdvFluidHopper extends TileEntity implements IFluidHandler{
 				//IFluidHandler
 				boolean in = this.insertFluidInHopper();
 				boolean out = this.extractFluidFromHopper();
+				
+				if (productTank.getFluid() != null && productTank.getFluidAmount() > productTank.getCapacity()){
+					productTank.setAmount(productTank.getCapacity());
+				}
 				
 				if (in || out) {
 					this.active = true;
@@ -515,7 +557,8 @@ public class TileAdvFluidHopper extends TileEntity implements IFluidHandler{
 	
 	public short getFluidGauge()
     {
-    	return (short) (productTank.getFluidAmount() / 800);
+		int max = productTank.getCapacity() / 100;
+    	return (short) (productTank.getFluidAmount() / max);
     }
 	
 	//モード設定

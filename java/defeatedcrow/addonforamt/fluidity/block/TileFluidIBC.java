@@ -2,6 +2,7 @@ package defeatedcrow.addonforamt.fluidity.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import defeatedcrow.addonforamt.fluidity.common.FFConfig;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -17,7 +18,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class TileFluidIBC extends TileEntity implements IFluidHandler{
 	
 	//このTileEntityに持たせる液体タンク。引数は最大容量。
-	public FluidTankFF productTank = new FluidTankFF(1024000);
+	public FluidTankFF productTank = new FluidTankFF(FFConfig.sizeIBC);
 	
 	private int lastAmount = 0;
 
@@ -27,7 +28,7 @@ public class TileFluidIBC extends TileEntity implements IFluidHandler{
     {
         super.readFromNBT(par1NBTTagCompound);
         
-        this.productTank = new FluidTankFF(1024000);
+        this.productTank = new FluidTankFF(FFConfig.sizeIBC);
 		if (par1NBTTagCompound.hasKey("productTank")) {
 		    this.productTank.readFromNBT(par1NBTTagCompound.getCompoundTag("productTank"));
 		}
@@ -57,6 +58,10 @@ public class TileFluidIBC extends TileEntity implements IFluidHandler{
 	//見た目更新用
 	public void updateEntity()
 	{
+		if (productTank.getFluid() != null && productTank.getFluidAmount() > productTank.getCapacity()){
+			productTank.setAmount(productTank.getCapacity());
+		}
+		
 		if (!worldObj.isRemote)
 		{
 			this.onServerUpdate();
@@ -96,7 +101,8 @@ public class TileFluidIBC extends TileEntity implements IFluidHandler{
 	
 	public short getFluidGauge()
     {
-    	return (short) (productTank.getFluidAmount() / 10240);
+		int max = productTank.getCapacity() / 100;
+    	return (short) (productTank.getFluidAmount() / max);
     }
     
 	/*====== IFluidHandlerの実装部分 ======*/

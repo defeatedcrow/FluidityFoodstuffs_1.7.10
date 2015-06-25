@@ -28,7 +28,7 @@ public class FluidTankFF extends FluidTank{
 
 	//判定処理の短縮用の満タンフラグ
 	public boolean isFull() {
-	    return (getFluid() != null) && (getFluid().amount == getCapacity());
+	    return (getFluid() != null) && (getFluid().amount >= getCapacity());
 	}
 
 	//Fluid型で中身を得る
@@ -48,6 +48,7 @@ public class FluidTankFF extends FluidTank{
 	{
 		if (this.fluid != null && this.fluid.getFluid() != null)
 		{
+			par1 = Math.min(par1, capacity);
 			this.fluid.amount = par1;
 		}
 	}
