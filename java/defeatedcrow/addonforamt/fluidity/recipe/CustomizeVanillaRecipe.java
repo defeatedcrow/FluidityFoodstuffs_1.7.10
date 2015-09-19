@@ -39,12 +39,18 @@ public class CustomizeVanillaRecipe {
 	static void initializeMap()
 	{
 		exclusions.add(new ItemStack(Blocks.hay_block));
-		exclusions.add(new ItemStack(FluidityCore.flourCont, 8, 3));
-		exclusions.add(new ItemStack(FluidityCore.flourCont, 8, 0));
-		exclusions.add(new ItemStack(FluidityCore.flourCont, 8, 7));
+		exclusions.add(new ItemStack(FluidityCore.flourCont, 1, 3));
+		exclusions.add(new ItemStack(FluidityCore.flourCont, 1, 0));
+		exclusions.add(new ItemStack(FluidityCore.flourCont, 1, 7));
+		exclusions.add(new ItemStack(FluidityCore.flourCont, 1, 8));
+		exclusions.add(new ItemStack(FluidityCore.flourCont, 1, 9));
+		exclusions.add(new ItemStack(FluidityCore.milkBucket, 1, 0));
+		exclusions.add(new ItemStack(Items.milk_bucket, 1, 0));
+		exclusions.add(new ItemStack(Items.lava_bucket, 1, 0));
 		
 		replaceTable.put(new ItemStack(Items.milk_bucket), "foodMilk");
 		replaceTable.put(new ItemStack(Items.water_bucket), "foodWater");
+		replaceTable.put(new ItemStack(Items.lava_bucket), "bucketLava");
 		replaceTable.put(new ItemStack(Items.sugar), "foodSugar");
 		replaceTable.put(new ItemStack(Items.wheat), "foodFlour");
 		replaceTable.put(new ItemStack(Items.wheat_seeds), "foodSeed");

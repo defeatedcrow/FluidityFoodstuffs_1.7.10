@@ -8,11 +8,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import mods.defeatedcrow.api.recipe.IProcessorRecipe;
 import mods.defeatedcrow.api.recipe.RecipeRegisterManager;
 import mods.defeatedcrow.common.DCsAppleMilk;
+import mods.defeatedcrow.handler.FluidContMap;
+import mods.defeatedcrow.handler.FluidContMap.BottlePack;
 import mods.defeatedcrow.plugin.LoadModHandler;
 import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
 import defeatedcrow.addonforamt.fluidity.recipe.CustomizeVanillaRecipe;
@@ -105,6 +109,7 @@ public class AMTIntegration {
 		
 		RecipeRegisterManager.processorRecipe.addRecipe(new ItemStack(DCsAppleMilk.EXItems, 24, 7), false, null,
 				new Object[]{Items.bucket});
+		
 	}
 
 }

@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import defeatedcrow.addonforamt.fluidity.block.BlockAdvFluidHopper;
 import defeatedcrow.addonforamt.fluidity.block.BlockFluidHopper;
@@ -84,7 +85,13 @@ public class MaterialRegister {
 		
 		registerMilk = new Fluid("fluid_" + "milk").setDensity(1032).setViscosity(1000);
 		FluidRegistry.registerFluid(registerMilk);
+		// FFM milk のチェック
+		FluidityCore.ffmMilk = FluidRegistry.getFluid("milk");
 		FluidityCore.milkFluid = FluidRegistry.getFluid("fluid_" + "milk");
+		boolean ffm = false;
+		if (FluidityCore.ffmMilk != null){
+			ffm = true;
+		}
 		
 		if (FluidityCore.flourFluid != null)
 		{
@@ -220,9 +227,6 @@ public class MaterialRegister {
 		
 		if (FluidityCore.milkFluid != null)
 		{
-			FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("fluid_milk", 100),
-					new ItemStack(FluidityCore.flourCont, 1, 3), new ItemStack(Items.paper));
-			
 			FluidityCore.milkBlock = new FluidMilkBase(FluidityCore.milkFluid, Material.water, "milk" + "_still")
 			.setBlockName("fluiditydc.block_" + "milk");
 			GameRegistry.registerBlock(FluidityCore.milkBlock, "block_" + "milk");
@@ -230,13 +234,28 @@ public class MaterialRegister {
 			
 			if (FluidityCore.milkBlock != null)
 			{
+				FluidityCore.milkBucket = new ItemFlourBucket(FluidityCore.milkBlock, "milk")
+				.setUnlocalizedName("fluiditydc.bucket_milk")
+				.setCreativeTab(FluidityCore.fluidity);
+				GameRegistry.registerItem(FluidityCore.milkBucket, "fluiditydc.bucket_milk");
 				FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("fluid_milk", 1000),
-						new ItemStack(Items.milk_bucket, 1, 0), new ItemStack(Items.bucket));
+						new ItemStack(FluidityCore.milkBucket, 1, 0), new ItemStack(Items.bucket));
+				
+				if (ffm){
+					FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("milk", 100),
+							new ItemStack(FluidityCore.flourCont, 1, 3), new ItemStack(Items.paper));
+				} else {
+					FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("fluid_milk", 100),
+							new ItemStack(FluidityCore.flourCont, 1, 3), new ItemStack(Items.paper));
+				}
 			}
 		}
 		
 		FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(FluidRegistry.WATER.getName(), 100),
 				new ItemStack(FluidityCore.flourCont, 1, 7), new ItemStack(Items.paper));
+		
+		FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(FluidRegistry.LAVA.getName(), 100),
+				new ItemStack(FluidityCore.flourCont, 1, 8), new ItemStack(Items.paper));
 	}
 
 }

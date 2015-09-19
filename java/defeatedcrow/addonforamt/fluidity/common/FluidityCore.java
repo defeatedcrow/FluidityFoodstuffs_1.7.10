@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
+import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -20,6 +21,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import defeatedcrow.addonforamt.fluidity.event.*;
 import defeatedcrow.addonforamt.fluidity.integration.*;
 import defeatedcrow.addonforamt.fluidity.recipe.*;
@@ -27,7 +29,7 @@ import defeatedcrow.addonforamt.fluidity.recipe.*;
 @Mod(
 		modid = "FluidityDC",
 		name = "FluidityFoodstuffs",
-		version = "1.7.10_1.2d",
+		version = "1.7.10_1.3a",
 		dependencies = "required-after:Forge@[10.13.2.1291,);after:DCsAppleMilk"
 		)
 public class FluidityCore {
@@ -55,6 +57,8 @@ public class FluidityCore {
 	public static Fluid riceFluid;
 	public static Fluid seedFluid;
 	
+	public static Fluid ffmMilk;
+	
 	public static Block flourBlock;
 	public static Block saltBlock;
 	public static Block sugarBlock;
@@ -69,6 +73,7 @@ public class FluidityCore {
 	public static Item wheatBucket;
 	public static Item riceBucket;
 	public static Item seedBucket;
+	public static Item milkBucket;
 	
 	//gadgets
 	public static Block fluidIBC;
@@ -90,19 +95,22 @@ public class FluidityCore {
 		
 		MaterialRegister.addItem();
 		MaterialRegister.addBlock();
-		MaterialRegister.addFluid();
-		proxy.registerFluidTex();
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		MaterialRegister.addFluid();
+		proxy.registerFluidTex();
+		
 		logger.info("Now Init");
 		MinecraftForge.EVENT_BUS.register(new BucketFillEvent());
 		MinecraftForge.EVENT_BUS.register(new CrickBucketBeforeFill());
 		MinecraftForge.EVENT_BUS.register(new CrickSackEvent());
 		OreRegister.load();
 		BasicRecipe.addRecipe();
+		
+		GameRegistry.registerFuelHandler((IFuelHandler)flourCont);
 		
 		//render
 		renderIBC = proxy.getRenderID();
@@ -161,12 +169,12 @@ public class FluidityCore {
 	
 	public int getMinorVersion()
 	{
-		return 2;
+		return 3;
 	}
 	
 	public String getRivision()
 	{
-		return "d";
+		return "a";
 	}
 	
 	public String getModName()

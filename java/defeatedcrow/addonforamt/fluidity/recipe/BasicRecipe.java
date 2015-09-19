@@ -47,16 +47,6 @@ public class BasicRecipe {
 		
 		GameRegistry.addRecipe(
 	 			new ShapedOreRecipe(
-	 	    	new ItemStack(FluidityCore.flourCont, 8, 3),
-	 	    	new Object[]{
-	 						 "XXX",
-	 						 "XYX",
-	 						 "XXX",
-	 						 'X', new ItemStack(Items.paper),
-	 						 'Y', Items.milk_bucket}));
-		
-		GameRegistry.addRecipe(
-	 			new ShapedOreRecipe(
 	 	    	new ItemStack(FluidityCore.flourCont, 8, 4),
 	 	    	new Object[]{
 	 						 "XXX",
@@ -97,6 +87,16 @@ public class BasicRecipe {
 		
 		GameRegistry.addRecipe(
 	 			new ShapedOreRecipe(
+	 	    	new ItemStack(FluidityCore.flourCont, 8, 8),
+	 	    	new Object[]{
+	 						 "XXX",
+	 						 "XYX",
+	 						 "XXX",
+	 						 'X', new ItemStack(Items.paper),
+	 						 'Y', Items.lava_bucket}));
+		
+		GameRegistry.addRecipe(
+	 			new ShapedOreRecipe(
 	 	    	new ItemStack(FluidityCore.flourBucket, 1, 0),
 	 	    	new Object[]{
 	 						 "XXX",
@@ -123,16 +123,6 @@ public class BasicRecipe {
 	 						 "XYX",
 	 						 "XXX",
 	 						 'X', "foodSugar",
-	 						 'Y', Items.bucket}));
-		
-		GameRegistry.addRecipe(
-	 			new ShapedOreRecipe(
-	 	    	new ItemStack(Items.milk_bucket, 1, 0),
-	 	    	new Object[]{
-	 						 "XXX",
-	 						 "XYX",
-	 						 "XXX",
-	 						 'X', "foodMilk",
 	 						 'Y', Items.bucket}));
 		
 		GameRegistry.addRecipe(
@@ -167,12 +157,32 @@ public class BasicRecipe {
 		
 		GameRegistry.addRecipe(
 	 			new ShapedOreRecipe(
+	 	    	new ItemStack(FluidityCore.seedBucket, 1, 0),
+	 	    	new Object[]{
+	 						 "XXX",
+	 						 "XYX",
+	 						 "XXX",
+	 						 'X', "foodSeed",
+	 						 'Y', Items.bucket}));
+		
+		GameRegistry.addRecipe(
+	 			new ShapedOreRecipe(
 	 	    	new ItemStack(Items.water_bucket, 1, 0),
 	 	    	new Object[]{
 	 						 "XXX",
 	 						 "XYX",
 	 						 "XXX",
 	 						 'X', "foodWater",
+	 						 'Y', Items.bucket}));
+		
+		GameRegistry.addRecipe(
+	 			new ShapedOreRecipe(
+	 	    	new ItemStack(Items.lava_bucket, 1, 0),
+	 	    	new Object[]{
+	 						 "XXX",
+	 						 "XYX",
+	 						 "XXX",
+	 						 'X', "bottleLava",
 	 						 'Y', Items.bucket}));
 		
 		GameRegistry.addRecipe(
@@ -273,6 +283,84 @@ public class BasicRecipe {
 	 						 'Z', new ItemStack(Items.egg),
 	 						 'Y', "foodSugar",
 	 						 'W', "foodFlour",}));
+		
+		// FFMにもMilkがあるので、変換レシピを追加
+		if (FluidityCore.ffmMilk != null){
+			GameRegistry.addRecipe(
+					 new ShapelessOreRecipe(
+		    		  new ItemStack(FluidityCore.flourCont, 1, 3),
+		    		  new Object[]{
+		    			  new ItemStack(FluidityCore.flourCont, 1, 9)
+						 }));
+			
+			GameRegistry.addRecipe(
+					 new ShapelessOreRecipe(
+		    		  new ItemStack(FluidityCore.flourCont, 1, 9),
+		    		  new Object[]{
+		    			  new ItemStack(FluidityCore.flourCont, 1, 3)
+						 }));
+			
+			GameRegistry.addRecipe(
+		 			new ShapedOreRecipe(
+		 	    	new ItemStack(Items.milk_bucket, 1, 0),
+		 	    	new Object[]{
+		 						 "XXX",
+		 						 "XYX",
+		 						 "XXX",
+		 						 'X', new ItemStack(FluidityCore.flourCont, 1, 9),
+		 						 'Y', Items.bucket}));
+			
+			GameRegistry.addRecipe(
+		 			new ShapedOreRecipe(
+		 	    	new ItemStack(FluidityCore.milkBucket, 1, 0),
+		 	    	new Object[]{
+		 						 "XXX",
+		 						 "XYX",
+		 						 "XXX",
+		 						 'X', new ItemStack(FluidityCore.flourCont, 1, 3),
+		 						 'Y', Items.bucket}));
+			
+			GameRegistry.addRecipe(
+		 			new ShapedOreRecipe(
+		 	    	new ItemStack(FluidityCore.flourCont, 8, 3),
+		 	    	new Object[]{
+		 						 "XXX",
+		 						 "XYX",
+		 						 "XXX",
+		 						 'X', new ItemStack(Items.paper),
+		 						 'Y', FluidityCore.milkBucket}));
+			
+			GameRegistry.addRecipe(
+		 			new ShapedOreRecipe(
+		 	    	new ItemStack(FluidityCore.flourCont, 8, 9),
+		 	    	new Object[]{
+		 						 "XXX",
+		 						 "XYX",
+		 						 "XXX",
+		 						 'X', new ItemStack(Items.paper),
+		 						 'Y', Items.milk_bucket}));
+			
+		} else {
+			GameRegistry.addRecipe(
+		 			new ShapedOreRecipe(
+		 	    	new ItemStack(Items.milk_bucket, 1, 0),
+		 	    	new Object[]{
+		 						 "XXX",
+		 						 "XYX",
+		 						 "XXX",
+		 						 'X', new ItemStack(FluidityCore.flourCont, 1, 3),
+		 						 'Y', Items.bucket}));
+			
+			GameRegistry.addRecipe(
+		 			new ShapedOreRecipe(
+		 	    	new ItemStack(FluidityCore.flourCont, 8, 3),
+		 	    	new Object[]{
+		 						 "XXX",
+		 						 "XYX",
+		 						 "XXX",
+		 						 'X', new ItemStack(Items.paper),
+		 						 'Y', Items.milk_bucket}));
+		}
 		
 		//AMT無しでは小麦粉を入手できないので、救済レシピを追加する。
 		if (!Loader.isModLoaded("DCsAppleMilk"))
