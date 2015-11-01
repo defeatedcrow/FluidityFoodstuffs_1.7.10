@@ -1,4 +1,4 @@
-# FluidityFoodstuffs 1.7.10_1.0b
+# FluidityFoodstuffs for1.7.10
 
 ##概要
 ・このMODは単体でも導入できますが、主にAppleMilkTea ver2のレシピ拡張アドオンの前提MODとして作成されたMODです。
@@ -9,7 +9,7 @@
 
 ### 動作環境:
 ・Minecraft 1.7.10
-<br>・MinecraftForge 10.13.0.1230+
+<br>・MinecraftForge 10.13.0.1291+
  
 ### ライセンス:
 ・ソースコード：MMPL-1.0
