@@ -330,7 +330,7 @@ public class BasicRecipe {
 					Items.flint }));
 		}
 
-		// MBTリセットレシピ
+		// NBTリセットレシピ
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(FluidityCore.fluidIBC, 1, 0),
 				new Object[] { FluidityCore.fluidIBC }));
 	}

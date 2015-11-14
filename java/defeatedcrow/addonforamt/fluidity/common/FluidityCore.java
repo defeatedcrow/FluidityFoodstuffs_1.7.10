@@ -26,13 +26,14 @@ import defeatedcrow.addonforamt.fluidity.event.BucketFillEvent;
 import defeatedcrow.addonforamt.fluidity.event.CrickBucketBeforeFill;
 import defeatedcrow.addonforamt.fluidity.event.CrickSackEvent;
 import defeatedcrow.addonforamt.fluidity.event.DispenserIBCEvent;
+import defeatedcrow.addonforamt.fluidity.event.JumpInFluidEvent;
 import defeatedcrow.addonforamt.fluidity.integration.AMTIntegration;
 import defeatedcrow.addonforamt.fluidity.recipe.BasicRecipe;
 import defeatedcrow.addonforamt.fluidity.recipe.CustomizeVanillaRecipe;
 import defeatedcrow.addonforamt.fluidity.recipe.OreGetter;
 import defeatedcrow.addonforamt.fluidity.recipe.OreRegister;
 
-@Mod(modid = "FluidityDC", name = "FluidityFoodstuffs", version = "1.7.10_1.4a",
+@Mod(modid = "FluidityDC", name = "FluidityFoodstuffs", version = "1.7.10_1.4c",
 		dependencies = "required-after:Forge@[10.13.2.1291,);after:DCsAppleMilk")
 public class FluidityCore {
 
@@ -111,6 +112,7 @@ public class FluidityCore {
 		MinecraftForge.EVENT_BUS.register(new BucketFillEvent());
 		MinecraftForge.EVENT_BUS.register(new CrickBucketBeforeFill());
 		MinecraftForge.EVENT_BUS.register(new CrickSackEvent());
+		MinecraftForge.EVENT_BUS.register(new JumpInFluidEvent());
 		OreRegister.load();
 		BasicRecipe.addRecipe();
 		BasicRecipe.addConvertion();
@@ -139,6 +141,10 @@ public class FluidityCore {
 			} catch (Exception e) {
 				e.printStackTrace(System.err);
 			}
+		}
+
+		if (FFConfig.allowReplace) {
+			FFConfig.addOreDic();
 		}
 
 		// ore handling
@@ -173,7 +179,7 @@ public class FluidityCore {
 	}
 
 	public String getRivision() {
-		return "a";
+		return "c";
 	}
 
 	public String getModName() {

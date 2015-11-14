@@ -7,6 +7,8 @@ item.fluiditydc.sack_wheat.name=麦穂袋
 item.fluiditydc.sack_rice.name=米袋
 item.fluiditydc.sack_seed.name=種袋
 item.fluiditydc.sack_water.name=水パック
+item.fluiditydc.sack_lava.name=溶岩パック
+item.fluiditydc.sack_9.name=牛乳パック(FFM)
 
 item.fluiditydc.bucket_flour.name=小麦粉バケツ
 item.fluiditydc.bucket_salt.name=食塩バケツ
@@ -14,6 +16,7 @@ item.fluiditydc.bucket_sugar.name=砂糖バケツ
 item.fluiditydc.bucket_wheat.name=麦穂バケツ
 item.fluiditydc.bucket_rice.name=米バケツ
 item.fluiditydc.bucket_seed.name=種バケツ
+item.fluiditydc.bucket_milk.name=牛乳バケツ
 
 tile.fluiditydc.block_flour.name=流体小麦粉
 tile.fluiditydc.block_salt.name=流体食塩

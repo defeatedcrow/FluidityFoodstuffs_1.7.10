@@ -7,6 +7,8 @@ item.fluiditydc.sack_wheat.name=Wheat Sack
 item.fluiditydc.sack_rice.name=Rice Sack
 item.fluiditydc.sack_seed.name=Seed Sack
 item.fluiditydc.sack_water.name=Water Pack
+item.fluiditydc.sack_lava.name=Lava Pack
+item.fluiditydc.sack_9.name=Milk Pack (FFM)
 
 item.fluiditydc.bucket_flour.name=Flour Bucket
 item.fluiditydc.bucket_salt.name=Salt Bucket
@@ -14,6 +16,7 @@ item.fluiditydc.bucket_sugar.name=Sugar Bucket
 item.fluiditydc.bucket_wheat.name=Wheat Bucket
 item.fluiditydc.bucket_rice.name=Rice Bucket
 item.fluiditydc.bucket_seed.name=Seed Bucket
+item.fluiditydc.bucket_milk.name=Milk Bucket
 
 tile.fluiditydc.block_flour.name=Fluidity Flour
 tile.fluiditydc.block_salt.name=Fluidity Salt

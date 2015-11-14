@@ -1,11 +1,12 @@
 package defeatedcrow.addonforamt.fluidity.common;
 
-import mods.defeatedcrow.handler.Util;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.registry.GameRegistry;
 import defeatedcrow.addonforamt.fluidity.recipe.IMCReceptor;
 
 public class FFConfig {
@@ -62,6 +63,8 @@ public class FFConfig {
 
 	public static String[] replaceList = { "DCsAppleMilk:defeatedcrow.clam:0:foodClam" };
 
+	public static String[] oredicList = { "DCsAppleMilk:defeatedcrow.clam:0:foodClam" };
+
 	public static boolean allowReplace = true;
 
 	public static float IBCalpha = 0.8F;
@@ -84,6 +87,10 @@ public class FFConfig {
 
 			cfg.setCategoryComment("device setting", "Setting for fluid devices.");
 
+			cfg.setCategoryComment("recipe replace", "Setting for recipe replace system.");
+
+			cfg.setCategoryComment("rendering setting", "Setting for rendering.");
+
 			Property saltListP = cfg.get("oredictionary", "Salt", saltList);
 			Property sugarListP = cfg.get("oredictionary", "Sugar", sugarList);
 			Property milkListP = cfg.get("oredictionary", "Milk", milkList);
@@ -93,7 +100,7 @@ public class FFConfig {
 			Property seedListP = cfg.get("oredictionary", "Seed", seedList);
 			Property waterListP = cfg.get("oredictionary", "Water", waterList);
 
-			Property ibca = cfg.get("render setting", "IBC_alpha", IBCalpha);
+			Property ibca = cfg.get("rendering setting", "IBC_alpha", IBCalpha);
 
 			Property sizeI = cfg.get("device setting", "IBC_TankSize", sizeIBC,
 					"The tank size of the IBC. 1,000 - 1024,000 mB.");
@@ -110,7 +117,9 @@ public class FFConfig {
 			Property rateAdvH = cfg.get("device setting", "SolenoidValveHopper_FlowRate", flowRateAdv,
 					"The max flow rate of the Solenoid Valve Hopper. 10 - 10,000 mB.");
 
-			Property repListP = cfg.get("recipe replace", "ReplaceMapRegister", replaceList);
+			Property repListP = cfg.get("recipe replace", "ReplaceMapRegister", replaceList, "Please add Item and .");
+
+			Property oreListP = cfg.get("recipe replace", "OreDictionaryRegister", oredicList);
 
 			Property allowRep = cfg.get("recipe replace", "EnableReplaceConfig", allowReplace,
 					"Enable customisation of the recipe replacing system.");
@@ -125,6 +134,7 @@ public class FFConfig {
 			waterList = waterListP.getStringList();
 
 			replaceList = repListP.getStringList();
+			oredicList = oreListP.getStringList();
 
 			IBCalpha = MathHelper.clamp_float((float) ibca.getDouble(), 0.0F, 1.0F);
 
@@ -151,7 +161,7 @@ public class FFConfig {
 
 				try {
 					if (split.length == 4) {
-						Item item = Util.getModItem(split[0], split[1]);
+						Item item = GameRegistry.findItem(split[0], split[1]);
 						int m = Integer.parseInt(split[2]);
 						if (item != null)
 							input = new ItemStack(item, 1, m);
@@ -164,6 +174,32 @@ public class FFConfig {
 					IMCReceptor.getReplaceTable().put(input, split[3]);
 					FluidityCore.logger.info("Succeed to register new replace item: " + input.toString() + " to "
 							+ split[3]);
+				}
+
+			}
+		}
+	}
+
+	static void addOreDic() {
+		for (String name : oredicList) {
+			if (name.contains(":")) {
+				String[] split = name.split(":");
+				ItemStack input = null;
+
+				try {
+					if (split.length == 4) {
+						Item item = GameRegistry.findItem(split[0], split[1]);
+						int m = Integer.parseInt(split[2]);
+						if (item != null)
+							input = new ItemStack(item, 1, m);
+					}
+				} catch (Exception e) {
+					FluidityCore.logger.info("Failed to register new item: " + name);
+				}
+
+				if (input != null) {
+					OreDictionary.registerOre(split[3], input);
+					FluidityCore.logger.info("New oredic to item: " + input.toString() + " / " + split[3]);
 				}
 
 			}

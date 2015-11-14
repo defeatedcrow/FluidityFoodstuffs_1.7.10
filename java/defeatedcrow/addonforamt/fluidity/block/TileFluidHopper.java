@@ -39,7 +39,7 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 	// このTileEntityに持たせる液体タンク。引数は最大容量。
 	public FluidTankFF productTank = new FluidTankFF(FFConfig.sizeFluidHopper);
 
-	public final int MAX_COOLTIME = 10;
+	public final int MAX_COOLTIME = 4;
 	private int coolTime = 0;
 	private int mode = 0;
 
@@ -835,8 +835,11 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 
 	@Override
 	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
-		return (par1 == 1) ? false : (par2ItemStack != null && FluidContainerRegistry.isContainer(par2ItemStack) ? true
-				: false);
+		if (par1 != 1 && par2ItemStack != null) {
+			return FluidContainerRegistry.isContainer(par2ItemStack)
+					|| (FluidConverter.instance.getRecipe(par2ItemStack) != null);
+		}
+		return false;
 	}
 
 	@Override
