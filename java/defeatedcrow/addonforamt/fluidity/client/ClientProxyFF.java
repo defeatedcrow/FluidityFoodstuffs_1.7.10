@@ -1,7 +1,10 @@
 package defeatedcrow.addonforamt.fluidity.client;
 
-import mods.defeatedcrow.handler.KeyConfigHelper;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -18,6 +21,7 @@ import defeatedcrow.addonforamt.fluidity.block.TileFluidHopper;
 import defeatedcrow.addonforamt.fluidity.block.TileFluidIBC;
 import defeatedcrow.addonforamt.fluidity.common.CommonProxyFF;
 import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
+import defeatedcrow.addonforamt.fluidity.fluid.fluid.FluidFlourBase;
 
 public class ClientProxyFF extends CommonProxyFF {
 
@@ -78,7 +82,25 @@ public class ClientProxyFF extends CommonProxyFF {
 
 	@Override
 	public boolean isJumpKeyDown() {
-		return Keyboard.isKeyDown(KeyConfigHelper.getJumpKey());
+		int j = Minecraft.getMinecraft().gameSettings.keyBindJump.getKeyCode();
+		return Keyboard.isKeyDown(j);
+	}
+
+	@Override
+	public boolean onJumpInFluid() {
+		EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+		int x = MathHelper.floor_double(player.posX);
+		int y = MathHelper.floor_double(player.posY);
+		int z = MathHelper.floor_double(player.posZ);
+
+		Block upper = player.worldObj.getBlock(x, y, z);
+		Block under = player.worldObj.getBlock(x, y - 1, z);
+		if (upper instanceof FluidFlourBase || under instanceof FluidFlourBase) {
+			player.motionY = 0.4F;
+			return true;
+		}
+
+		return false;
 	}
 
 }

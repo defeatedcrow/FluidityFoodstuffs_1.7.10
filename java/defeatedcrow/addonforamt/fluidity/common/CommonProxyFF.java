@@ -80,4 +80,8 @@ public class CommonProxyFF implements IGuiHandler {
 		return false;
 	}
 
+	public boolean onJumpInFluid() {
+		return false;
+	}
+
 }

@@ -28,12 +28,13 @@ import defeatedcrow.addonforamt.fluidity.event.CrickSackEvent;
 import defeatedcrow.addonforamt.fluidity.event.DispenserIBCEvent;
 import defeatedcrow.addonforamt.fluidity.event.JumpInFluidEvent;
 import defeatedcrow.addonforamt.fluidity.integration.AMTIntegration;
+import defeatedcrow.addonforamt.fluidity.packet.NetworkHandlerFF;
 import defeatedcrow.addonforamt.fluidity.recipe.BasicRecipe;
 import defeatedcrow.addonforamt.fluidity.recipe.CustomizeVanillaRecipe;
 import defeatedcrow.addonforamt.fluidity.recipe.OreGetter;
 import defeatedcrow.addonforamt.fluidity.recipe.OreRegister;
 
-@Mod(modid = "FluidityDC", name = "FluidityFoodstuffs", version = "1.7.10_1.4c",
+@Mod(modid = "FluidityDC", name = "FluidityFoodstuffs", version = "1.7.10_1.4e",
 		dependencies = "required-after:Forge@[10.13.2.1291,);after:DCsAppleMilk")
 public class FluidityCore {
 
@@ -128,6 +129,8 @@ public class FluidityCore {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 
 		DispenserIBCEvent.setIBC();
+
+		NetworkHandlerFF.init();
 	}
 
 	@EventHandler
@@ -179,7 +182,7 @@ public class FluidityCore {
 	}
 
 	public String getRivision() {
-		return "c";
+		return "e";
 	}
 
 	public String getModName() {
