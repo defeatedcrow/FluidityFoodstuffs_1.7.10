@@ -10,6 +10,11 @@ item.fluiditydc.sack_water.name=Water Pack
 item.fluiditydc.sack_lava.name=Lava Pack
 item.fluiditydc.sack_9.name=Milk Pack (FFM)
 
+item.fluiditydc.empty_bamboo.name=Empty Bamboo Bottle
+item.fluiditydc.empty_ceramics.name=Empty Ceramics Bottle
+item.fluiditydc.filled_bamboo.name=Bamboo Bottle
+item.fluiditydc.filled_ceramics.name=Ceramics Bottle
+
 item.fluiditydc.bucket_flour.name=Flour Bucket
 item.fluiditydc.bucket_salt.name=Salt Bucket
 item.fluiditydc.bucket_sugar.name=Sugar Bucket

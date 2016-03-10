@@ -14,7 +14,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import defeatedcrow.addonforamt.fluidity.block.TileFluidHopper;
-import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
 import defeatedcrow.addonforamt.fluidity.packet.MessageHopperMode;
 import defeatedcrow.addonforamt.fluidity.packet.NetworkHandlerFF;
 
@@ -130,7 +129,7 @@ public class GuiFHopper extends GuiContainer {
 		String s = "x:" + ix + ", y:" + iy;
 		boolean flag = false;
 		if (ix > 0 && ix < this.xSize && iy > 0 && iy < this.ySize / 2) {
-			FluidityCore.logger.info(s);
+			// FluidityCore.logger.info(s);
 			boolean b = false;
 			if (ix > 67 && ix < 82 && iy > 59 && iy < 74) {
 				b = true;

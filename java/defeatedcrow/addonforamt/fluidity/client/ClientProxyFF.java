@@ -45,6 +45,8 @@ public class ClientProxyFF extends CommonProxyFF {
 				new RenderItemFHopper());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(FluidityCore.fluidHopperAdv),
 				new RenderItemAdvFHopper());
+		MinecraftForgeClient.registerItemRenderer(FluidityCore.filledBamboo, new ItemRenderFluidCont());
+		MinecraftForgeClient.registerItemRenderer(FluidityCore.filledBottle, new ItemRenderFluidCont());
 	}
 
 	@Override

@@ -10,6 +10,11 @@ item.fluiditydc.sack_water.name=水パック
 item.fluiditydc.sack_lava.name=溶岩パック
 item.fluiditydc.sack_9.name=牛乳パック(FFM)
 
+item.fluiditydc.empty_bamboo.name=空の竹水筒
+item.fluiditydc.empty_ceramics.name=空の陶器ボトル
+item.fluiditydc.filled_bamboo.name=竹水筒
+item.fluiditydc.filled_ceramics.name=陶器ボトル
+
 item.fluiditydc.bucket_flour.name=小麦粉バケツ
 item.fluiditydc.bucket_salt.name=食塩バケツ
 item.fluiditydc.bucket_sugar.name=砂糖バケツ

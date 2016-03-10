@@ -7,6 +7,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import defeatedcrow.addonforamt.fluidity.common.FFConfig;
 import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
 
 public class BasicRecipe {
@@ -333,6 +334,26 @@ public class BasicRecipe {
 		// NBTリセットレシピ
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(FluidityCore.fluidIBC, 1, 0),
 				new Object[] { FluidityCore.fluidIBC }));
+
+		if (FFConfig.allowSmallBottle) {
+			// 液体容器
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(FluidityCore.emptyBottle, 1, 0), new Object[] {
+					" X ",
+					"Y Y",
+					" Y ",
+					'X',
+					"plankWood",
+					'Y',
+					Items.clay_ball }));
+
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(FluidityCore.emptyBamboo, 1, 0), new Object[] {
+					"X",
+					"Y",
+					'X',
+					"plankWood",
+					'Y',
+					"bamboo" }));
+		}
 	}
 
 	public static void addConvertion() {

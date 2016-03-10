@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -238,7 +239,24 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		if (in == null || in.getItem() == null) {
 			return;
 		}
-		if (FluidContainerRegistry.isFilledContainer(in)) {
+		if (in.getItem() instanceof IFluidContainerItem) {
+			ItemStack empty = new ItemStack(in.getItem(), 1, in.getItemDamage());
+			ItemStack copy = in.copy();
+			copy.stackSize = 1;
+			IFluidContainerItem cont = (IFluidContainerItem) in.getItem();
+			FluidStack fluid2 = cont.getFluid(copy);
+			int max = cont.getCapacity(copy);
+			if (fluid2 != null && fluid2.getFluid() != null
+					&& (this.itemstacks[1] == null || this.isItemStackable(empty, this.itemstacks[1]))) {
+				int put = this.fill(ForgeDirection.UNKNOWN, fluid2, false);
+				if (put == fluid2.amount) {
+					this.fill(ForgeDirection.UNKNOWN, fluid2, true);
+					this.incrStackInSlot(1, empty);
+					this.decrStackSize(0, 1);
+					this.markDirty();
+				}
+			}
+		} else if (FluidContainerRegistry.isFilledContainer(in)) {
 			FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(in);
 			ItemStack empty = FluidContainerRegistry.drainFluidContainer(in.copy());
 			ItemStack current = this.getStackInSlot(1);
@@ -290,7 +308,28 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		ItemStack current = this.getStackInSlot(1);
 		FluidStack fluid = this.productTank.getFluid();
 
-		if (in != null && fluid != null && FluidContainerRegistry.isEmptyContainer(in)) {
+		if (in == null || in.getItem() == null || fluid == null) {
+			return;
+		}
+		if (in.getItem() instanceof IFluidContainerItem) {
+			IFluidContainerItem cont = (IFluidContainerItem) in.getItem();
+			if (fluid != null && fluid.getFluid() != null) {
+				ItemStack copy = in.copy();
+				copy.stackSize = 1;
+				int max = cont.getCapacity(copy);
+				int drain = cont.fill(copy, fluid, false);
+				if (max > 0 && max == drain && fluid.amount >= max) {
+					int amount = max;
+					this.drain(ForgeDirection.UNKNOWN, amount, true);
+					cont.fill(copy, new FluidStack(fluid.getFluid(), max), true);
+					if (current == null || this.isItemStackable(copy, current)) {
+						this.incrStackInSlot(1, copy);
+						this.decrStackSize(0, 1);
+						this.markDirty();
+					}
+				}
+			}
+		} else if (fluid != null && FluidContainerRegistry.isEmptyContainer(in)) {
 			ItemStack ret = FluidContainerRegistry.fillFluidContainer(fluid, in);
 
 			boolean flag1 = ret != null;
@@ -634,21 +673,25 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		}
 	}
 
-	private static boolean isItemStackable(ItemStack target, ItemStack current) {
-		if (target == null || current == null)
-			return false;
+	private static boolean isItemStackable(ItemStack target, ItemStack stack) {
+		if (stack != null && target != null && stack.getItem() != null && stack.getItem() != null) {
+			boolean i = stack.getItem() == target.getItem();
+			boolean m = stack.getItemDamage() == target.getItemDamage();
+			boolean n = !stack.hasTagCompound() && !target.hasTagCompound();
+			if (stack.hasTagCompound() && target.hasTagCompound()
+					&& stack.stackTagCompound.equals(target.stackTagCompound)) {
+				n = true;
+			}
 
-		if (target.getItem() == current.getItem() && target.getItemDamage() == current.getItemDamage()) {
-			return (current.stackSize + target.stackSize) <= current.getMaxStackSize();
+			return i && m && n;
 		}
 
-		return false;
+		return stack == null && target == null;
 	}
 
 	private void incrStackInSlot(int i, ItemStack input) {
 		if (i < this.getSizeInventory() && input != null && this.itemstacks[i] != null) {
-			if (this.itemstacks[i].getItem() == input.getItem()
-					&& this.itemstacks[i].getItemDamage() == input.getItemDamage()) {
+			if (this.isItemStackable(this.itemstacks[i], input)) {
 				this.itemstacks[i].stackSize += input.stackSize;
 				if (this.itemstacks[i].stackSize > this.getInventoryStackLimit()) {
 					this.itemstacks[i].stackSize = this.getInventoryStackLimit();

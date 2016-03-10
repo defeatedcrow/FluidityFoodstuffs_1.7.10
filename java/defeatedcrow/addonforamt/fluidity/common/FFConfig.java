@@ -28,6 +28,7 @@ public class FFConfig {
 			"foodSugar" };
 	public static String[] milkList = {
 			"milk",
+			"milk180",
 			"listAllmilk",
 			"bucketMilk",
 			"cookingMilk",
@@ -66,6 +67,7 @@ public class FFConfig {
 	public static String[] oredicList = { "DCsAppleMilk:defeatedcrow.clam:0:foodClam" };
 
 	public static boolean allowReplace = true;
+	public static boolean allowSmallBottle = true;
 
 	public static float IBCalpha = 0.8F;
 
@@ -124,6 +126,9 @@ public class FFConfig {
 			Property allowRep = cfg.get("recipe replace", "EnableReplaceConfig", allowReplace,
 					"Enable customisation of the recipe replacing system.");
 
+			Property allowBottle = cfg.get("recipe replace", "EnableSmallBottle", allowSmallBottle,
+					"Enable small bottle (cramics and bamboo) recipe.");
+
 			saltList = saltListP.getStringList();
 			sugarList = sugarListP.getStringList();
 			milkList = milkListP.getStringList();
@@ -145,6 +150,7 @@ public class FFConfig {
 			flowRateAdv = MathHelper.clamp_int(rateAdvH.getInt(), 10, 10000);
 
 			allowReplace = allowRep.getBoolean();
+			allowSmallBottle = allowBottle.getBoolean();
 
 		} catch (Exception e) {
 			e.printStackTrace();

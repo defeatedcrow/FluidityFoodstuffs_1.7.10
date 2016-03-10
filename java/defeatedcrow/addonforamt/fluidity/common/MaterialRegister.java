@@ -13,8 +13,11 @@ import defeatedcrow.addonforamt.fluidity.block.BlockFluidIBC;
 import defeatedcrow.addonforamt.fluidity.block.ItemBlockFluidContainer;
 import defeatedcrow.addonforamt.fluidity.fluid.fluid.FluidFlourBase;
 import defeatedcrow.addonforamt.fluidity.fluid.fluid.FluidMilkBase;
+import defeatedcrow.addonforamt.fluidity.fluid.item.ItemFluidEmptyBamboo;
+import defeatedcrow.addonforamt.fluidity.fluid.item.ItemFluidEmptyBottle;
 import defeatedcrow.addonforamt.fluidity.fluid.item.ItemFlourBucket;
 import defeatedcrow.addonforamt.fluidity.fluid.item.ItemFlourContainer;
+import defeatedcrow.addonforamt.fluidity.fluid.item.ItemFluidContBase;
 
 public class MaterialRegister {
 
@@ -33,7 +36,24 @@ public class MaterialRegister {
 		FluidityCore.flourCont = new ItemFlourContainer().setUnlocalizedName("fluiditydc.sack").setCreativeTab(
 				FluidityCore.fluidity);
 
+		FluidityCore.emptyBamboo = new ItemFluidEmptyBamboo().setUnlocalizedName("fluiditydc.empty_bamboo")
+				.setCreativeTab(FluidityCore.fluidity).setTextureName("fluiditydc:bottle_bamboo");
+
+		FluidityCore.emptyBottle = new ItemFluidEmptyBottle().setUnlocalizedName("fluiditydc.empty_ceramics")
+				.setCreativeTab(FluidityCore.fluidity).setTextureName("fluiditydc:bottle_ceramics");
+
 		GameRegistry.registerItem(FluidityCore.flourCont, "fluiditydc.sack");
+		GameRegistry.registerItem(FluidityCore.emptyBamboo, "fluiditydc.empty_bamboo");
+		GameRegistry.registerItem(FluidityCore.emptyBottle, "fluiditydc.empty_ceramics");
+
+		FluidityCore.filledBamboo = new ItemFluidContBase(FluidityCore.emptyBamboo, "bamboo")
+				.setCreativeTab(FluidityCore.fluidityCont);
+
+		FluidityCore.filledBottle = new ItemFluidContBase(FluidityCore.emptyBottle, "ceramics")
+				.setCreativeTab(FluidityCore.fluidityCont);
+
+		GameRegistry.registerItem(FluidityCore.filledBamboo, "fluiditydc.filled_bamboo");
+		GameRegistry.registerItem(FluidityCore.filledBottle, "fluiditydc.filled_ceramics");
 	}
 
 	public static void addBlock() {

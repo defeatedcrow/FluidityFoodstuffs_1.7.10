@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import defeatedcrow.addonforamt.fluidity.common.FluidityCore;
@@ -53,7 +54,7 @@ public class BlockFluidIBC extends BlockContainer {
 			// TileEntityの液体タンクに入っている液体を取得
 			FluidStack fluid = tile.productTank.getFluid();
 
-			if (itemstack == null)// 素手
+			if (itemstack == null || itemstack.getItem() == null)// 素手
 			{
 				// 表示用の文字列をとりあえず作成
 				String s = "";
@@ -73,6 +74,85 @@ public class BlockFluidIBC extends BlockContainer {
 					par5EntityPlayer.addChatMessage(new ChatComponentText(s));
 
 				return true;
+			} else if (itemstack.getItem() instanceof IFluidContainerItem) {
+				// コンテナアイテムのやつ
+				IFluidContainerItem cont = (IFluidContainerItem) itemstack.getItem();
+				FluidStack fluid2 = cont.getFluid(itemstack);
+
+				// 満たされた液体コンテナが手持ちの場合
+				if (fluid2 != null && fluid2.getFluid() != null) {
+					/*
+					 * fillメソッドの第二引数にfalseを入れた場合、実際に液体をタンクに入れるのではなく、
+					 * タンクに投入可能な液体の量をシュミレートして値を返す。
+					 */
+					int put = tile.fill(ForgeDirection.UNKNOWN, fluid2, false);
+
+					// 全量投入可能なときのみ
+					if (put == fluid2.amount) {
+						// 今度は液体を液体タンクに入れるので、第二引数はtrueにする。
+						tile.fill(ForgeDirection.UNKNOWN, fluid2, true);
+
+						// 液体容器を空にして、空容器を得るメソッド。
+						ItemStack emptyContainer = par5EntityPlayer.inventory.getCurrentItem().splitStack(1);
+						cont.drain(emptyContainer, put, true);
+						if (emptyContainer != null) {
+							if (!par5EntityPlayer.inventory.addItemStackToInventory(emptyContainer.copy())) {
+								par5EntityPlayer.entityDropItem(emptyContainer.copy(), 1);
+							}
+						}
+
+						// 更新を伝える処理
+						// TileEntityを更新した場合、このように更新処理を挟まないと見た目に反映しない。
+						tile.markDirty();
+						par5EntityPlayer.inventory.markDirty();
+						par1World.markBlockForUpdate(par2, par3, par4);
+
+						// 効果音の発生
+						par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
+
+						return true;
+					}
+				} else {
+					// 液体タンクに何かしら入っている時
+					if (fluid != null && fluid.getFluid() != null) {
+						/*
+						 * ContainerItem側に十分な空きがあるか
+						 */
+						ItemStack copy = itemstack.copy();
+						copy.stackSize = 1;
+						int max = cont.getCapacity(copy);
+						int drain = cont.fill(copy, fluid, false);
+						if (max > 0 && max == drain && fluid.amount >= max) {
+							int amount = max;
+							/*
+							 * タンクの液体の減少処理
+							 * タンク容量 > amount であることをチェックしてから行う
+							 */
+							tile.drain(ForgeDirection.UNKNOWN, amount, true);
+
+							// プレイヤーに、先に取得した「液体で満たされた容器アイテム」を与える処理
+							ItemStack filled = par5EntityPlayer.inventory.getCurrentItem().splitStack(1);
+							cont.fill(filled, new FluidStack(fluid.getFluid(), max), true);
+							if (filled != null) {
+								if (!par5EntityPlayer.inventory.addItemStackToInventory(filled.copy())) {
+									par5EntityPlayer.entityDropItem(filled.copy(), 1);
+								}
+							}
+
+							// 更新を伝える処理
+							// TileEntityを更新した場合、このように更新処理を挟まないと見た目に反映しない。
+							tile.markDirty();
+							par5EntityPlayer.inventory.markDirty();
+							par1World.markBlockForUpdate(par2, par3, par4);
+
+							// 効果音の発生
+							par1World.playSoundAtEntity(par5EntityPlayer, "random.pop", 0.4F, 1.8F);
+
+							return true;
+						}
+					}
+				}
+
 			} else {
 				// このメソッドにより、手持ちのアイテムが液体容器に登録されたアイテムかどうか、及び入っている液体を取得する。
 				FluidStack fluid2 = FluidContainerRegistry.getFluidForFilledItem(itemstack);
@@ -163,9 +243,6 @@ public class BlockFluidIBC extends BlockContainer {
 
 							return true;
 						}
-					} else {
-						// アイテムが液体入り容器でなく、かつタンクが空だった場合は何もしない
-						return true;
 					}
 				}
 			}

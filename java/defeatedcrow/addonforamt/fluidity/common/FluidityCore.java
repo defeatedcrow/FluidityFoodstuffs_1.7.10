@@ -1,11 +1,19 @@
 package defeatedcrow.addonforamt.fluidity.common;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +42,7 @@ import defeatedcrow.addonforamt.fluidity.recipe.CustomizeVanillaRecipe;
 import defeatedcrow.addonforamt.fluidity.recipe.OreGetter;
 import defeatedcrow.addonforamt.fluidity.recipe.OreRegister;
 
-@Mod(modid = "FluidityDC", name = "FluidityFoodstuffs", version = "1.7.10_1.4e",
+@Mod(modid = "FluidityDC", name = "FluidityFoodstuffs", version = "1.7.10_1.5c",
 		dependencies = "required-after:Forge@[10.13.2.1291,);after:DCsAppleMilk")
 public class FluidityCore {
 
@@ -49,6 +57,7 @@ public class FluidityCore {
 	public static Logger logger = LogManager.getLogger("FluidityDC");
 
 	public static final CreativeTabs fluidity = new CreativeTabFF("fluidity");
+	public static final CreativeTabs fluidityCont = new CreativeTabFluidCont("fluidityCont");
 
 	// foodstaffs
 	public static Item flourCont;
@@ -79,6 +88,11 @@ public class FluidityCore {
 	public static Item riceBucket;
 	public static Item seedBucket;
 	public static Item milkBucket;
+
+	public static Item emptyBamboo;
+	public static Item filledBamboo;
+	public static Item emptyBottle;
+	public static Item filledBottle;
 
 	// gadgets
 	public static Block fluidIBC;
@@ -170,7 +184,29 @@ public class FluidityCore {
 
 	@EventHandler
 	public void postInit(FMLLoadCompleteEvent event) {
+		// FluidContainerの自動登録
+		Map<Fluid, Integer> map = FluidRegistry.getRegisteredFluidIDsByFluid();
+		for (Entry<Fluid, Integer> e : map.entrySet()) {
+			Fluid f = e.getKey();
+			int i = e.getValue();
+			ItemStack b = new ItemStack(filledBamboo, 1, i);
+			ItemStack c = new ItemStack(filledBottle, 1, i);
 
+			if (f != null) {
+				FluidContainerRegistry.registerFluidContainer(new FluidStack(f, 200), b, new ItemStack(emptyBamboo, 1));
+				FluidContainerRegistry.registerFluidContainer(new FluidStack(f, 200), c, new ItemStack(emptyBottle, 1));
+
+				if (f == FluidRegistry.WATER) {
+					OreDictionary.registerOre("bucketWater", b);
+					OreDictionary.registerOre("bucketWater", c);
+					OreDictionary.registerOre("foodWater", b);
+					OreDictionary.registerOre("foodWater", c);
+				} else if (f == FluidRegistry.LAVA) {
+					OreDictionary.registerOre("bucketLava", b);
+					OreDictionary.registerOre("bucketLava", c);
+				}
+			}
+		}
 	}
 
 	public int getMajorVersion() {
@@ -178,11 +214,11 @@ public class FluidityCore {
 	}
 
 	public int getMinorVersion() {
-		return 4;
+		return 5;
 	}
 
 	public String getRivision() {
-		return "e";
+		return "c";
 	}
 
 	public String getModName() {
