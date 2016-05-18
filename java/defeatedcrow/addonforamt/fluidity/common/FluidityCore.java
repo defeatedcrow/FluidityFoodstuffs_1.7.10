@@ -42,7 +42,7 @@ import defeatedcrow.addonforamt.fluidity.recipe.CustomizeVanillaRecipe;
 import defeatedcrow.addonforamt.fluidity.recipe.OreGetter;
 import defeatedcrow.addonforamt.fluidity.recipe.OreRegister;
 
-@Mod(modid = "FluidityDC", name = "FluidityFoodstuffs", version = "1.7.10_1.5c",
+@Mod(modid = "FluidityDC", name = "FluidityFoodstuffs", version = "1.7.10_1.6a",
 		dependencies = "required-after:Forge@[10.13.2.1291,);after:DCsAppleMilk")
 public class FluidityCore {
 
@@ -214,11 +214,11 @@ public class FluidityCore {
 	}
 
 	public int getMinorVersion() {
-		return 5;
+		return 6;
 	}
 
 	public String getRivision() {
-		return "c";
+		return "a";
 	}
 
 	public String getModName() {

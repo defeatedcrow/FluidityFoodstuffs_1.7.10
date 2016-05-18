@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,6 +35,7 @@ public abstract class ItemFluidEmptyBase extends Item {
 				int i = movingobjectposition.blockX;
 				int j = movingobjectposition.blockY;
 				int k = movingobjectposition.blockZ;
+				ForgeDirection dir = this.directionFromMOP(movingobjectposition.sideHit);
 
 				if (player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, item)) {
 
@@ -95,6 +97,29 @@ public abstract class ItemFluidEmptyBase extends Item {
 			}
 		}
 		return super.onItemRightClick(item, world, player);
+	}
+
+	public Fluid getCurrentFluid(ItemStack item) {
+		if (item == null)
+			return null;
+		int id = item.getItemDamage();
+		Fluid ret = FluidRegistry.getFluid(id);
+		return ret;
+	}
+
+	ForgeDirection directionFromMOP(int i) {
+		ForgeDirection[] dirs = {
+				ForgeDirection.DOWN,
+				ForgeDirection.UP,
+				ForgeDirection.EAST,
+				ForgeDirection.WEST,
+				ForgeDirection.NORTH,
+				ForgeDirection.SOUTH };
+		if (i >= 0 && i < dirs.length) {
+			return dirs[i];
+		} else {
+			return ForgeDirection.UP;
+		}
 	}
 
 }

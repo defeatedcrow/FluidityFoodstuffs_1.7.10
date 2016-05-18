@@ -239,20 +239,35 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		if (in == null || in.getItem() == null) {
 			return;
 		}
-		if (in.getItem() instanceof IFluidContainerItem) {
-			ItemStack empty = new ItemStack(in.getItem(), 1, in.getItemDamage());
+		if (in.getItem() instanceof IFluidContainerItem && this.extractAmount() == 0) {
 			ItemStack copy = in.copy();
 			copy.stackSize = 1;
-			IFluidContainerItem cont = (IFluidContainerItem) in.getItem();
-			FluidStack fluid2 = cont.getFluid(copy);
-			int max = cont.getCapacity(copy);
-			if (fluid2 != null && fluid2.getFluid() != null
-					&& (this.itemstacks[1] == null || this.isItemStackable(empty, this.itemstacks[1]))) {
-				int put = this.fill(ForgeDirection.UNKNOWN, fluid2, false);
-				if (put == fluid2.amount) {
-					this.fill(ForgeDirection.UNKNOWN, fluid2, true);
-					this.incrStackInSlot(1, empty);
-					this.decrStackSize(0, 1);
+			IFluidContainerItem cont = (IFluidContainerItem) copy.getItem();
+			int max = Math.min(cont.getCapacity(copy), 1000); // 1000ずつ
+			FluidStack drain = cont.drain(copy, max, false); // contから引き抜きできる最大量
+			int put = this.fill(ForgeDirection.UNKNOWN, drain, false); // Hopperに入れられる量のチェック
+
+			if (drain != null && drain.getFluid() != null && put > 0) {
+				// modによってContItemの方針が違う
+				// スタック不可・大容量アイテムの場合 -> in実体からdrain
+				if (in.stackSize == 1) {
+					drain.amount = put;
+					cont.drain(in, put, true);
+					this.fill(ForgeDirection.UNKNOWN, drain, true);
+					if (cont.getFluid(in) == null || cont.getFluid(in).amount <= 0) {
+						this.incrStackInSlot(1, in);
+						this.decrStackSize(0, 1);
+					}
+					this.markDirty();
+				} else if (put == cont.getCapacity(copy)) {
+					// スタッカブル小型容量アイテムの場合 -> 一回で空にできる場合のみ可・架空スタックを用いる
+					drain.amount = put;
+					cont.drain(copy, put, true);
+					this.fill(ForgeDirection.UNKNOWN, drain, true);
+					if (cont.getFluid(copy) == null || cont.getFluid(copy).amount <= 0) {
+						this.incrStackInSlot(1, copy);
+						this.decrStackSize(0, 1);
+					}
 					this.markDirty();
 				}
 			}
@@ -311,22 +326,33 @@ public class TileFluidHopper extends TileEntity implements IFluidHandler, ISided
 		if (in == null || in.getItem() == null || fluid == null) {
 			return;
 		}
-		if (in.getItem() instanceof IFluidContainerItem) {
-			IFluidContainerItem cont = (IFluidContainerItem) in.getItem();
-			if (fluid != null && fluid.getFluid() != null) {
-				ItemStack copy = in.copy();
-				copy.stackSize = 1;
-				int max = cont.getCapacity(copy);
-				int drain = cont.fill(copy, fluid, false);
-				if (max > 0 && max == drain && fluid.amount >= max) {
-					int amount = max;
-					this.drain(ForgeDirection.UNKNOWN, amount, true);
-					cont.fill(copy, new FluidStack(fluid.getFluid(), max), true);
-					if (current == null || this.isItemStackable(copy, current)) {
+		if (in.getItem() instanceof IFluidContainerItem && this.extractAmount() > 0) {
+			ItemStack copy = in.copy();
+			copy.stackSize = 1;
+			IFluidContainerItem cont = (IFluidContainerItem) copy.getItem();
+			int max = Math.min(cont.getCapacity(copy), 1000); // 1000ずつ
+			FluidStack drain = this.drain(ForgeDirection.UNKNOWN, max, false); // Hopperに入れられる量のチェック
+			int fill = cont.fill(copy, drain, false); // contから引き抜きできる最大量
+
+			if (drain != null && drain.getFluid() != null && fill > 0) {
+				if (in.stackSize == 1) {
+					drain.amount = fill;
+					cont.fill(in, drain, true);
+					this.drain(ForgeDirection.UNKNOWN, fill, true);
+					if (cont.getFluid(in) != null && cont.getFluid(in).amount == cont.getCapacity(in)) {
+						this.incrStackInSlot(1, in);
+						this.decrStackSize(0, 1);
+					}
+					this.markDirty();
+				} else if (fill == cont.getCapacity(copy)) {
+					drain.amount = fill;
+					cont.fill(copy, drain, true);
+					this.drain(ForgeDirection.UNKNOWN, fill, true);
+					if (cont.getFluid(copy) != null && cont.getFluid(copy).amount == cont.getCapacity(copy)) {
 						this.incrStackInSlot(1, copy);
 						this.decrStackSize(0, 1);
-						this.markDirty();
 					}
+					this.markDirty();
 				}
 			}
 		} else if (fluid != null && FluidContainerRegistry.isEmptyContainer(in)) {

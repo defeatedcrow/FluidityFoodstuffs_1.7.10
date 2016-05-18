@@ -3,6 +3,7 @@ package defeatedcrow.addonforamt.fluidity.event;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,6 +37,10 @@ public class DispenserIBCEvent {
 						int j = block.getYInt() + enumfacing.getFrontOffsetY();
 						int k = block.getZInt() + enumfacing.getFrontOffsetZ();
 
+						if (block == Blocks.dropper) {
+							flag = false;
+							return super.dispenseStack(block, item);
+						}
 						if (j < 5 || j > 254) {
 							this.flag = false;
 						} else if (world.isAirBlock(i, j, k)) {
